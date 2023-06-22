@@ -1,11 +1,3 @@
----
-name: "[feat]"
-about: Pull request template
-title: "[feat]제목(#0)"
-labels: feat
-assignees: ''
-
----
 ## 작업 내역
 - 
 
