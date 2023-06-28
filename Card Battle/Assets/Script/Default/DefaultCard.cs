@@ -50,7 +50,7 @@ public class DefaultCard
     Sprite img; // 카드 이미지 필요합니다
     public Sprite Img { get => img; }
 
-    delegate void Use(); //카드 사용, 효과 범위를 따로 변수로 두기 보다는 Use에 등록할 때 구현하는게 좋을 듯 합니다.
+    public delegate void Use(); 
     
     public DefaultCard(int id, CardType type, string name, List<Buff> buffs, int effVal, Sprite img)
     {
