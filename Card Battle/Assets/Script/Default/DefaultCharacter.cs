@@ -22,6 +22,7 @@ public class DefaultCharacter
     public int Id { get => id;  }
 
     Weapon weapon; // 무기 타입
+    public Weapon Weapon { get => weapon; set => weapon = value; }
 
     string name; // 플레이어 닉네임
     public string Name { get => name; set => name = value; }
@@ -54,7 +55,12 @@ public class DefaultCharacter
     
     List<Card> cards; //플레이어가 가지고있는 덱 확인
 
-    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense List<Card> cards, Weapon weapon)
+    Sprite img;
+    public Sprite Img { get => img; set => img = value; }
+
+    public delegate void Use();
+
+    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense, List<Card> cards, Weapon weapon, Sprite img)
     {
         this.id = id;
         this.name = name;
@@ -64,5 +70,6 @@ public class DefaultCharacter
         this.defense = defense;
         this.cards = cards;
         this.weapon = weapon;
+        this.img = img;
     }
 }
