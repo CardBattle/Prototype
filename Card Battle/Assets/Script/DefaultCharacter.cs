@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum Weapon   
 {  
-    Hands, 
+    Hand, 
     Sword, 
     Bow,
     Wand,  
@@ -19,7 +19,7 @@ public class DefaultCharacter
   
    
     int id; // 플레이어 직업 구분
-    public int Id { get => id; set => id = value; }
+    public int Id { get => id;  }
 
     Weapon weapon; // 무기 타입
 
@@ -29,9 +29,9 @@ public class DefaultCharacter
     int level; //플레이어의 레벨
     public int Level { get => level; set => level = value; }
 
-    public int deffenceDmg;
+    public int defense;
 
-    public int DeffenceDmg { get => deffenceDmg; set => deffenceDmg = value; } //플레이어 방어력
+    public int Defense { get => Defense; set => Defense = value; } //플레이어 방어력
 
 
     int hp; //캐릭터 체력 
@@ -52,15 +52,16 @@ public class DefaultCharacter
     
     public int AttackDmg { get => attackDmg; set => value = attackDmg; }//공력력도 다시 확인
     
-    List<DefalultCard> cards; //플레이어가 가지고있는 덱 확인
+    List<Card> cards; //플레이어가 가지고있는 덱 확인
 
-    public void CreateCharacter(int id, string name, int level, int hp, int attackDmg, List<DefalultCard> cards, Weapon weapon)
+    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense List<Card> cards, Weapon weapon)
     {
         this.id = id;
         this.name = name;
         this.level = level;
         this.hp = hp;
         this.attackDmg = attackDmg;
+        this.defense = defense;
         this.cards = cards;
         this.weapon = weapon;
     }
