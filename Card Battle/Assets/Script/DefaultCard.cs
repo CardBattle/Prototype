@@ -8,18 +8,18 @@ public enum CardType
     MAGIC,
     DEFAULT,
 }
-public class Card
+public class DefaultCard
 {
-    int id; //카드 번호
+    int id;
     public int Id { get => id; }
 
-    CardType type; //카드 종류
+    CardType type;
     public CardType Type { get => type; }
 
-    string name; //카드 이름
+    string name;
     public string Name { get => name; }
 
-    public List<Buff> buffs;//버프랑 디버프 번호보다는 버프, 디버프 클래스 리스트를 만들어서 추가하는것이 나을듯합니다.
+    public List<Buff> buffs;
     
     int effVal; //효과수치
     public int EffVal { get => effVal; }
@@ -52,7 +52,7 @@ public class Card
 
     delegate void Use(); //카드 사용, 효과 범위를 따로 변수로 두기 보다는 Use에 등록할 때 구현하는게 좋을 듯 합니다.
     
-    public Card(int id, CardType type, string name, List<Buff> buffs, int effVal, Sprite img)
+    public DefaultCard(int id, CardType type, string name, List<Buff> buffs, int effVal, Sprite img)
     {
         this.id = id;
         this.type = type;
