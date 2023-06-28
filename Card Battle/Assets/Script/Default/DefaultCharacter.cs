@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public enum Weapon   
+public enum WeaponType   
 {  
     Hand, 
     Sword, 
@@ -15,27 +15,27 @@ public enum Weapon
 }
 public class DefaultCharacter
 {
-    //¿­°ÅÇüÀ» ÀÌ¿ëÇØ¼­ Á÷¾÷ÀÌ¶û ¹«±â ±¸ºĞ
+    //ì—´ê±°í˜•ì„ ì´ìš©í•´ì„œ ì§ì—…ì´ë‘ ë¬´ê¸° êµ¬ë¶„
   
    
-    int id; // ÇÃ·¹ÀÌ¾î Á÷¾÷ ±¸ºĞ
+    int id; // í”Œë ˆì´ì–´ ì§ì—… êµ¬ë¶„
     public int Id { get => id;  }
 
-    Weapon weapon; // ¹«±â Å¸ÀÔ
-    public Weapon Weapon { get => weapon; set => weapon = value; }
+    WeaponType weapon; // ë¬´ê¸° íƒ€ì…
+    public WeaponType Weapon { get => weapon; set => weapon = value; }
 
-    string name; // ÇÃ·¹ÀÌ¾î ´Ğ³×ÀÓ
+    string name; // í”Œë ˆì´ì–´ ë‹‰ë„¤ì„
     public string Name { get => name; set => name = value; }
     
-    int level; //ÇÃ·¹ÀÌ¾îÀÇ ·¹º§
+    int level; //í”Œë ˆì´ì–´ì˜ ë ˆë²¨
     public int Level { get => level; set => level = value; }
 
     public int defense;
 
-    public int Defense { get => Defense; set => Defense = value; } //ÇÃ·¹ÀÌ¾î ¹æ¾î·Â
+    public int Defense { get => Defense; set => Defense = value; } //í”Œë ˆì´ì–´ ë°©ì–´ë ¥
 
 
-    int hp; //Ä³¸¯ÅÍ Ã¼·Â 
+    int hp; //ìºë¦­í„° ì²´ë ¥ 
 
     public int Hp
     {
@@ -49,18 +49,18 @@ public class DefaultCharacter
         }
     }
     
-    int attackDmg; // Ä³¸¯ÅÍ °ø°İ·Â
+    int attackDmg; // ìºë¦­í„° ê³µê²©ë ¥
     
-    public int AttackDmg { get => attackDmg; set => value = attackDmg; }//°ø·Â·Âµµ ´Ù½Ã È®ÀÎ
+    public int AttackDmg { get => attackDmg; set => value = attackDmg; }//ê³µë ¥ë ¥ë„ ë‹¤ì‹œ í™•ì¸
     
-    List<Card> cards; //ÇÃ·¹ÀÌ¾î°¡ °¡Áö°íÀÖ´Â µ¦ È®ÀÎ
+    List<Card> cards; //í”Œë ˆì´ì–´ê°€ ê°€ì§€ê³ ìˆëŠ” ë± í™•ì¸
 
     Sprite img;
     public Sprite Img { get => img; set => img = value; }
 
     public delegate void Use();
 
-    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense, List<Card> cards, Weapon weapon, Sprite img)
+    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense, List<Card> cards, WeaponType weapon, Sprite img)
     {
         this.id = id;
         this.name = name;
