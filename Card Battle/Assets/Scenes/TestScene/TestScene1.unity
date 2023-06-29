@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 5
   type: 2
   name: Fireball
   effVal: 4
@@ -256,6 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 1
   type: 3
   name: Rest
   effVal: 1
@@ -443,6 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 2
   type: 3
   name: Attack
   effVal: 1
@@ -546,6 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   type: 0
   name: Cut
   effVal: 1
@@ -649,6 +653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 4
   type: 1
   name: Arrow
   effVal: 2
@@ -802,8 +807,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 6
   type: 0
-  name: 
+  name: Sample
   effVal: 0
   level: 0
   img: {fileID: 0}
@@ -853,6 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 3
   type: 3
   name: Defense
   effVal: 1

@@ -8,7 +8,7 @@ public class Card : MonoBehaviour
 {
     public DefaultCard card;
 
-    int id = 0;
+    public int id;
     public CardType type;
     public string name;
     public int effVal;
