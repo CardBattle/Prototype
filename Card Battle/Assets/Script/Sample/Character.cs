@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
     public int hp;
     public int attackDmg;
 
-    public Weapon weapon;
+    public WeaponType weapon;
     public Sprite img;
 
     int id = 0;

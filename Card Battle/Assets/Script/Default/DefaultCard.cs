@@ -19,7 +19,7 @@ public class DefaultCard
     string name;
     public string Name { get => name; }
 
-    public List<Buff> buffs;
+    //public List<Buff> buffs;
     
     int effVal; //효과수치
     public int EffVal { get => effVal; }
@@ -52,12 +52,12 @@ public class DefaultCard
 
     public delegate void Use(); 
     
-    public DefaultCard(int id, CardType type, string name, List<Buff> buffs, int effVal, Sprite img)
+    public DefaultCard(int id, CardType type, string name, int effVal, Sprite img) //후에 버프 추가
     {
         this.id = id;
         this.type = type;
         this.name = name;
-        this.buffs = buffs;
+        //this.buffs = buffs;
         this.effVal = effVal;
         level = 1;
         this.img = img;
