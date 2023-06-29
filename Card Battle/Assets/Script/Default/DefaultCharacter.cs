@@ -11,7 +11,9 @@ public enum WeaponType
     Bow,
     Wand,  
     MagicSword,   
-    MagicBow
+    MagicBow,
+
+    Boss
 }
 public class DefaultCharacter
 {
@@ -32,7 +34,7 @@ public class DefaultCharacter
 
     public int defense;
 
-    public int Defense { get => Defense; set => Defense = value; } //플레이어 방어력
+    public int Defense { get => defense; set => defense = value; } //플레이어 방어력
 
 
     int hp; //캐릭터 체력 
