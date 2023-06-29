@@ -14,11 +14,16 @@ public class Card : MonoBehaviour
     public int level;
     public Sprite img;
 
-    public List<Buff> buffs;
+    //public List<Buff> buffs;
 
+    private void Start()
+    {
+        Init();
+        Test();
+    }
     public void Init()
     {
-        card = new(id, type, name, buffs, effVal, img);
+        card = new(id, type, name, effVal, img); //Buff 나중에 추가
     }
     public void Test()
     {
