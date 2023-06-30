@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Rest : CardUse
 {
-    public override void Use()
+    public override void Use(Character sender, Character receiver)
     {
-        base.Use();
+        base.Use(sender, receiver);
         Debug.Log("Rest");
     }
 

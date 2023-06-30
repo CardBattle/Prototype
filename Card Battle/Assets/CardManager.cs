@@ -32,7 +32,7 @@ public class CardManager : MonoBehaviour
     void Test()
     {
         foreach (var card in cards)
-            card.card.use();
+            card.card.use(null, null);
             
     }
 }

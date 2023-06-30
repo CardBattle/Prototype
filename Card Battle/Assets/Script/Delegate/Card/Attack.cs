@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Attack : CardUse
 {
-    public override void Use()
+    public override void Use(Character sender, Character receiver)
     {
-        base.Use();
+        base.Use(sender, receiver);
         Debug.Log("Attack");
     }
 
