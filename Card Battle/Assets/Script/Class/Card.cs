@@ -17,11 +17,7 @@ public class Card : MonoBehaviour
 
     public List<Buff> buffs;
 
-    private void Start()
-    {
-        Init();
-        Test();
-    }
+
     public void Init()
     {
         buffs = GetComponents<Buff>().ToList();

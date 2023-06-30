@@ -20,7 +20,8 @@ public class DefaultBuff
     int currentTurn; 
     public int CurrentTurn { get => currentTurn; set => currentTurn = value; }
 
-    delegate void Use(); //버프 적용 함수
+    public delegate void Use(); //버프 적용 함수
+    public Use use;
     public DefaultBuff(int id, BuffType type, string name, int turns)
     {
         this.id = id;

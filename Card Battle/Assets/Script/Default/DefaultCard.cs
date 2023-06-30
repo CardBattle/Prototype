@@ -50,7 +50,8 @@ public class DefaultCard
     Sprite img; // 카드 이미지 필요합니다
     public Sprite Img { get => img; }
 
-    public delegate void Use(); 
+    public delegate void Use();
+    public Use use;
     
     public DefaultCard(int id, CardType type, string name, List<Buff> buffs, int effVal, Sprite img) //후에 버프 추가
     {
