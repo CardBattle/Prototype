@@ -21,18 +21,9 @@ public class Character : MonoBehaviour
     
 
     public List<GameObject> cards; //플레이어 덱 확인
-
-    public void Start()
-    {
-        Init();
-        Test();//작동되는 확인
-    }
-    //Init은 나중에 Loader에서 한번에
-
     
     public void Init()
     {
-        cards = new List<GameObject>();
         character = new(id, name, level, hp, attackDmg, defense, cards, weapon, img);
     }
 

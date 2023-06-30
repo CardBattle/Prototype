@@ -20,18 +20,18 @@ public class CardManager : MonoBehaviour
     public List<GameObject> playerSelectedCards;
     public List<GameObject> enemySelectedCards;
 
-    private void Awake()
+    public void Init()
     {
         playerCardPrefabs = player.GetComponent<Character>().cards;
         enemyCardPrefabs = enemy.GetComponent<Character>().cards;
 
-        Init(playerCardPrefabs, playerCardObjs, playerCards);
-        Init(enemyCardPrefabs, enemyCardObjs, enemyCards);
+        Load(playerCardPrefabs, playerCardObjs, playerCards);
+        Load(enemyCardPrefabs, enemyCardObjs, enemyCards);
 
         Test();
     }
 
-    void Init(List<GameObject> cardPrefabs, List<GameObject> cardObjs, List<Card> cards)
+    void Load(List<GameObject> cardPrefabs, List<GameObject> cardObjs, List<Card> cards)
     {
         foreach (var cardPrefab in cardPrefabs)
         {
@@ -48,9 +48,6 @@ public class CardManager : MonoBehaviour
     void Test()
     {
         foreach (var card in playerCards)
-            card.card.use(null, null);
-
-        foreach (var card in enemyCards)
-            card.card.use(null, null);
+            card.card.use(player.GetComponent<Character>(), enemy.GetComponent<Character>());
     }
 }
