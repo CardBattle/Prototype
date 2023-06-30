@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rest : CardUse
+public class Fireball : CardUse
 {
     public override void Use()
     {
-        Debug.Log("Rest");
+        base.Use();
+        Debug.Log("Fireball");
     }
 
 }

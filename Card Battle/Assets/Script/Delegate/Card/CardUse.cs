@@ -11,7 +11,13 @@ public class CardUse : MonoBehaviour
 
     public virtual void Use()
     {
-
+        if(card.card.buffs.Count > 0 )
+        {
+            foreach(var buff in card.card.buffs)
+            {
+                buff.buff.use();
+            }
+        }
     }
 
 }

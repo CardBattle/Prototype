@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrow : CardUse
+public class Bleed : BuffUse
 {
+
     public override void Use()
     {
-        Debug.Log("Arrow");
+        Debug.Log("Bleed");
     }
-
 }
