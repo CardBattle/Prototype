@@ -10,7 +10,7 @@ public class BuffUse : MonoBehaviour
         buff.buff.use = Use;
     }
 
-    public virtual void Use()
+    public virtual void Use(Character sender, Character receiver)
     {
 
     }
