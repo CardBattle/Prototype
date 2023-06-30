@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : CardUse
+public class Rest : CardUse
 {
     public override void Use()
     {
-        Debug.Log("Attack");
+        base.Use();
+        Debug.Log("Rest");
     }
 
 }
