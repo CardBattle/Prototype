@@ -4,18 +4,36 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    //인스펙터창에서 넣어야하는 카드 프리팹들
-    public List<GameObject> cardPrefabs;
+    public GameObject player;
+    public GameObject enemy;
+
+    //적과 플레이어의 카드 프리팹
+    List<GameObject> playerCardPrefabs;
+    List<GameObject> enemyCardPrefabs;
     //Instantiate 된 카드 게임오브젝트 리스트
-    public List<GameObject> cardObjs;
+    public List<GameObject> playerCardObjs;
+    public List<GameObject> enemyCardObjs;
     //Instantiate된 카드 게임오브젝트들의 카드 스크립트
-    public List<Card> cards;
+    public List<Card> playerCards;
+    public List<Card> enemyCards;
     //선택된 카드들(드로우된 카드들)
-    public List<GameObject> selectedCards;
+    public List<GameObject> playerSelectedCards;
+    public List<GameObject> enemySelectedCards;
 
     private void Awake()
     {
-        foreach(var cardPrefab in cardPrefabs)
+        playerCardPrefabs = player.GetComponent<Character>().cards;
+        enemyCardPrefabs = enemy.GetComponent<Character>().cards;
+
+        Init(playerCardPrefabs, playerCardObjs, playerCards);
+        Init(enemyCardPrefabs, enemyCardObjs, enemyCards);
+
+        Test();
+    }
+
+    void Init(List<GameObject> cardPrefabs, List<GameObject> cardObjs, List<Card> cards)
+    {
+        foreach (var cardPrefab in cardPrefabs)
         {
             var cardObj = Instantiate(cardPrefab);
             var card = cardObj.GetComponent<Card>();
@@ -25,14 +43,14 @@ public class CardManager : MonoBehaviour
             cardObjs.Add(cardObj);
             cards.Add(card);
         }
-
-        Test();
     }
 
     void Test()
     {
-        foreach (var card in cards)
+        foreach (var card in playerCards)
             card.card.use(null, null);
-            
+
+        foreach (var card in enemyCards)
+            card.card.use(null, null);
     }
 }

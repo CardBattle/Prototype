@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
 
     
 
-    List<Card> cards; //플레이어 덱 확인
+    public List<GameObject> cards; //플레이어 덱 확인
 
     public void Start()
     {
@@ -32,7 +32,7 @@ public class Character : MonoBehaviour
     
     public void Init()
     {
-        cards = new List<Card>();
+        cards = new List<GameObject>();
         character = new(id, name, level, hp, attackDmg, defense, cards, weapon, img);
     }
 

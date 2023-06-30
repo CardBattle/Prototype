@@ -55,14 +55,14 @@ public class DefaultCharacter
     
     public int AttackDmg { get => attackDmg; set => value = attackDmg; }//공력력도 다시 확인
     
-    List<Card> cards; //플레이어가 가지고있는 덱 확인
+    List<GameObject> cards; //플레이어가 가지고있는 덱 확인
 
     Sprite img;
     public Sprite Img { get => img; set => img = value; }
 
     public delegate void Use();
 
-    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense, List<Card> cards, WeaponType weapon, Sprite img)
+    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense, List<GameObject> cards, WeaponType weapon, Sprite img)
     {
         this.id = id;
         this.name = name;
