@@ -20,10 +20,10 @@ public class CardUse : MonoBehaviour
             }
         }
 
-        receiver.character.Hp -= CaculateDmg(sender.character.AttackDmg, card.card.Dice, 1);//후에 1=>effectiveness 계산 함수로 변경
+        receiver.character.Hp -= CalculateDmg(sender.character.AttackDmg, card.card.Dice, 1);//후에 1=>effectiveness 계산 함수로 변경
     }
 
-    int CaculateDmg(int attackDmg, int dice, float effectiveness)
+    int CalculateDmg(int attackDmg, int dice, float effectiveness)
     {
         return (int)Mathf.Round((attackDmg + dice) * effectiveness);
     }
