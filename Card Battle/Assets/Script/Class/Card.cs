@@ -17,7 +17,6 @@ public class Card : MonoBehaviour
 
     public List<Buff> buffs;
 
-
     public void Init()
     {
         buffs = GetComponents<Buff>().ToList();
@@ -27,7 +26,10 @@ public class Card : MonoBehaviour
                 buff.Init();
         }
         card = new(id, type, name, buffs, effVal, img);
+
+        GetComponent<CardUse>().Init();
     }
+
     public void Test()
     {
         Debug.Log($"id: {card.Id}\ntype:{card.Type}\nname: {card.Name}\n" +

@@ -1,15 +1,8 @@
 using UnityEngine;
 
-public class Cut : MonoBehaviour
+public class Cut : CardUse
 {
-    Card card;
-    public void Init()
-    {
-        card = GetComponent<Card>();
-        card.card.use = Use;
-    }
-
-    private void Use()
+    public override void Use()
     {
         Debug.Log("Cut");
     }

@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Defense : MonoBehaviour
+public class Defense : CardUse
 {
-    Card card;
-    public void Init()
-    {
-        card = GetComponent<Card>();
-        card.card.use = Use;
-    }
-
-    private void Use()
+    public override void Use()
     {
         Debug.Log("Defense");
     }
+
 }

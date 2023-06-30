@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrow : MonoBehaviour
+public class Arrow : CardUse
 {
-    Card card;
-    public void Init()
-    {
-        card = GetComponent<Card>();
-        card.card.use = Use;
-    }
-
-    private void Use()
+    public override void Use()
     {
         Debug.Log("Arrow");
     }
+
 }
