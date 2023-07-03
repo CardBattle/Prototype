@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   type: 3
-  name: Defense
+  _name: Defense
   effVal: 1
   level: 1
   img: {fileID: 21300000, guid: 68e5a78013e33f247822a837e55b0ab4, type: 3}
@@ -117,3 +117,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e001cbc8297e3d468efae3c1430af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card: {fileID: 0}

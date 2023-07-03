@@ -4,34 +4,37 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public DefaultCharacter character;
+    public DefaultCharacter info;
 
-    //마왕은 여기다 포함을 할건지 아니면 다른 클래스를 만들건지 확인
+    [SerializeField]
+    private string _name;
+    [SerializeField]
+    private int id;
+    [SerializeField]
+    private int level;
+    [SerializeField]
+    private int defense;
+    [SerializeField]
+    private int hp;
+    [SerializeField]
+    private int attackDmg;
+    [SerializeField]
+    private WeaponType weapon;
+    [SerializeField]
+    private Sprite img;
 
-    public string name;
-    public int id; // 캐릭터인지 마왕인지
-    public int level;
-    public int defense;
-    public int hp;
-    public int attackDmg;
-
-    public WeaponType weapon;
-    public Sprite img; // 캐릭터 이미지
-
-    
-
-    public List<GameObject> cards; //플레이어 덱 확인
+    public List<GameObject> cards; //카드 매니저에서 캐릭터가 소유한 카드 프리팹을 접근해야하기 때문에 public
     
     public void Init()
     {
-        character = new(id, name, level, hp, attackDmg, defense, cards, weapon, img);
+        info = new(id, _name, level, hp, attackDmg, defense, cards, weapon, img);
     }
 
     public void Test()
     {
-        Debug.Log($"id: {character.Id}\nname: {character.Name}\n" +
-            $"level: {character.Level}\nhp: {character.Hp}\n" +
-            $"attackDmg: {character.AttackDmg}\ndefense: {character.Defense}\n"+
-            $"weapon: {character.Weapon}\nimg: {character.Img}");
+        Debug.Log($"id: {info.Id}\nname: {info.Name}\n" +
+            $"level: {info.Level}\nhp: {info.Hp}\n" +
+            $"attackDmg: {info.AttackDmg}\ndefense: {info.Defense}\n"+
+            $"weapon: {info.Weapon}\nimg: {info.Img}");
     }
 }

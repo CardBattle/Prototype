@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd092c1855909e4c93465434653c18a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: "\uC804\uC0AC"
+  _name: "\uC804\uC0AC"
   id: 0
   level: 1
   defense: 10
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd092c1855909e4c93465434653c18a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: "\uB9C8\uC655"
+  _name: "\uB9C8\uC655"
   id: 1
   level: 25
   defense: 300

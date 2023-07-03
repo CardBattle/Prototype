@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   type: 3
-  name: Attack
+  _name: Attack
   effVal: 1
   level: 1
   img: {fileID: 21300000, guid: 9125c204f566db048a92ebcb64d9d14a, type: 3}
@@ -117,3 +117,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee5ab10ce9c136458a4a752bcad17e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  card: {fileID: 0}

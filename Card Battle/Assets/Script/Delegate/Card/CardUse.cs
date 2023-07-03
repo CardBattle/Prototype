@@ -6,21 +6,21 @@ public class CardUse : MonoBehaviour
     public void Init()
     {
         card = GetComponent<Card>();
-        card.card.use = Use;
+        card.info.use = Use;
     }
 
     public virtual void Use(Character sender, Character receiver)
     {
         //버프 - 프로토타입 구현 X 연동만 해둠.
-        if(card.card.buffs.Count > 0 )
+        if(card.info.buffs.Count > 0 )
         {
-            foreach(var buff in card.card.buffs)
+            foreach(var buff in card.info.buffs)
             {
-                buff.buff.use(sender, receiver);
+                buff.info.use(sender, receiver);
             }
         }
 
-        receiver.character.Hp -= CalculateDmg(sender.character.AttackDmg, card.card.Dice, 1);//후에 1=>effectiveness 계산 함수로 변경
+        receiver.info.Hp -= CalculateDmg(sender.info.AttackDmg, card.info.Dice, 1);//후에 1=>effectiveness 계산 함수로 변경
     }
 
     int CalculateDmg(int attackDmg, int dice, float effectiveness)

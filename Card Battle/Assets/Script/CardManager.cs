@@ -48,6 +48,6 @@ public class CardManager : MonoBehaviour
     void Test()
     {
         foreach (var card in playerCards)
-            card.card.use(player.GetComponent<Character>(), enemy.GetComponent<Character>());
+            card.info.use(player.GetComponent<Character>(), enemy.GetComponent<Character>());
     }
 }

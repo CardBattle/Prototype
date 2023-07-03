@@ -6,16 +6,22 @@ using UnityEngine.TextCore.Text;
 
 public class Card : MonoBehaviour
 {
-    public DefaultCard card;
+    public DefaultCard info;
 
-    public int id;
-    public CardType type;
-    public string name;
-    public int effVal;
-    public int level;
-    public Sprite img;
-
-    public List<Buff> buffs;
+    [SerializeField]
+    private int id;
+    [SerializeField]
+    private CardType type;
+    [SerializeField]
+    private string _name;
+    [SerializeField]
+    private int effVal;
+    [SerializeField]
+    private int level;
+    [SerializeField]
+    private Sprite img;
+    [SerializeField]
+    private List<Buff> buffs;
 
     public void Init()
     {
@@ -25,19 +31,19 @@ public class Card : MonoBehaviour
             if(buff != null)
                 buff.Init();
         }
-        card = new(id, type, name, buffs, effVal, img);
+        info = new(id, type, _name, buffs, effVal, img);
 
         GetComponent<CardUse>().Init();
     }
 
     public void Test()
     {
-        Debug.Log($"id: {card.Id}\ntype:{card.Type}\nname: {card.Name}\n" +
-        $"level: {card.Level}\nimg: {card.Img}");
+        Debug.Log($"id: {info.Id}\ntype:{info.Type}\nname: {info.Name}\n" +
+        $"level: {info.Level}\nimg: {info.Img}");
         if (buffs.Count > 0)
             foreach (Buff buff in buffs)
             {
-                Debug.Log($"buff : {buff.buff.Name}");
+                Debug.Log($"buff : {buff.info.Name}");
             }
         else
             Debug.Log("No buffs");
