@@ -11,7 +11,7 @@ public class Card : MonoBehaviour
     [SerializeField]
     private int id;
     [SerializeField]
-    private CardType type;
+    private WeaponType type;
     [SerializeField]
     private string _name;
     [SerializeField]

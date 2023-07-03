@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2
-  type: 3
+  type: 0
   _name: Attack
   effVal: 1
   level: 1

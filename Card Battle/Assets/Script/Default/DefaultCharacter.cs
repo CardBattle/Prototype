@@ -6,14 +6,11 @@ using UnityEngine;
 
 public enum WeaponType   
 {  
-    Hand, 
-    Sword, 
-    Bow,
-    Wand,  
-    MagicSword,   
-    MagicBow,
-
-    Boss
+    DEFAULT, 
+    SWORD, 
+    BOW,
+    WAND,  
+    BOSS
 }
 public class DefaultCharacter
 {
