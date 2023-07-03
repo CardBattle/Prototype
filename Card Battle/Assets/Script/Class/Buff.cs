@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class Buff : MonoBehaviour
 {
-    public DefaultBuff buff;
+    public DefaultBuff info;
 
-    public int id;
-    public BuffType type;
-    public string name;
-    public int turns;
-
-    public BuffUse buffUse;
+    [SerializeField]
+    private int id;
+    [SerializeField]
+    private BuffType type;
+    [SerializeField]
+    private string _name;
+    [SerializeField]
+    private int turns;
+    [SerializeField]
+    private BuffUse buffUse;
     
     public void Init()
     {
-        buff = new(id, type, name, turns);
+        info = new(id, type, _name, turns);
 
         buffUse.Init(this);
     }

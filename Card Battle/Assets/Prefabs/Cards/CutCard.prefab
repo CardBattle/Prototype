@@ -104,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 0
-  name: Cut
+  _name: Cut
   effVal: 1
   level: 1
   img: {fileID: 21300000, guid: daf2ab606d4db0d4f9ecf4c02137d2a8, type: 3}
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 1
-  name: Bleed
+  _name: 
   turns: 3
   buffUse: {fileID: -527743871940799088}
 --- !u!114 &-7549491209215741638
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   type: 1
-  name: Burn
+  _name: 
   turns: 1
   buffUse: {fileID: -315109278961699801}
 --- !u!114 &-527743871940799088
@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64cc27e7cb67e5f4495f79116a7a4e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff: {fileID: 1922869052049409787}
 --- !u!114 &-315109278961699801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,4 +180,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8edb41cba70a05343887510c0a3f84ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buff: {fileID: -7549491209215741638}
