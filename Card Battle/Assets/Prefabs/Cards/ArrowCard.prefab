@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 4
-  type: 1
+  type: 2
   _name: Arrow
   effVal: 2
   level: 2

@@ -20,12 +20,45 @@ public class CardUse : MonoBehaviour
             }
         }
 
-        receiver.info.Hp -= CalculateDmg(sender.info.AttackDmg, card.info.Dice, 1);//후에 1=>effectiveness 계산 함수로 변경
+        receiver.info.Hp -= CalculateDmg(sender.info.AttackDmg, card.info.Dice, card.info.EffVal, 
+            CalculateEffect(card.info.Type, receiver.info.Weapon));
+
+        Debug.Log(receiver.info.Hp);
     }
 
-    int CalculateDmg(int attackDmg, int dice, float effectiveness)
+    int CalculateDmg(int attackDmg, int dice, int effVal, float effectiveness)
     {
-        return (int)Mathf.Round((attackDmg + dice) * effectiveness);
+        return (int)Mathf.Round((attackDmg + dice + effVal) * effectiveness);
+    }
+
+    /// <summary>
+    /// type1에는 사용되는 카드의 타입을, type2에는 공격받는 캐릭터의 무기 타입을 넣는다.
+    /// </summary>
+    /// <param name="type1">사용한 카드의 타입</param>
+    /// <param name="type2">공격받는 캐릭터의 타입</param>
+    /// <returns>상성이 계산된 float값 리턴</returns>
+    float CalculateEffect(WeaponType type1, WeaponType type2)
+    {
+        if (type2 == WeaponType.BOSS) return 0.5f;
+
+        if (type1 == WeaponType.DEFAULT || type2 == WeaponType.DEFAULT) return 1f;
+        if (type1 == WeaponType.SWORD)
+        {
+            if (type2 == WeaponType.WAND) return 0.5f;
+            if (type2 == WeaponType.BOW) return 2f;
+        }
+        if(type1 == WeaponType.BOW)
+        {
+            if (type2 == WeaponType.SWORD) return 0.5f;
+            if (type2 == WeaponType.WAND) return 2f;
+        }
+        if(type1 == WeaponType.WAND)
+        {
+            if (type2 == WeaponType.BOW) return 0.5f;
+            if (type2 == WeaponType.SWORD) return 2f;
+        }
+
+        return 0f;
     }
 
 }

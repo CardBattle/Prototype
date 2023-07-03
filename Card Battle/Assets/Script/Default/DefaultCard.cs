@@ -1,20 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CardType
-{
-    SWORD,
-    BOW,
-    MAGIC,
-    DEFAULT,
-}
 public class DefaultCard
 {
     int id;
     public int Id { get => id; }
 
-    CardType type;
-    public CardType Type { get => type; }
+    WeaponType type;
+    public WeaponType Type { get => type; }
 
     string name;
     public string Name { get => name; }
@@ -53,7 +46,7 @@ public class DefaultCard
     public delegate void Use(Character sender, Character receiver);
     public Use use;
     
-    public DefaultCard(int id, CardType type, string name, List<Buff> buffs, int effVal, Sprite img) //후에 버프 추가
+    public DefaultCard(int id, WeaponType type, string name, List<Buff> buffs, int effVal, Sprite img) //후에 버프 추가
     {
         this.id = id;
         this.type = type;
