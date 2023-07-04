@@ -103,7 +103,7 @@ MonoBehaviour:
   defense: 300
   hp: 2000
   attackDmg: 250
-  weapon: 4
+  weapon: 6
   img: {fileID: 21300000, guid: 9125c204f566db048a92ebcb64d9d14a, type: 3}
   cards:
   - {fileID: 4078094028994227434, guid: 7510eeca71a308640a5bf49ca3dc98d0, type: 3}
