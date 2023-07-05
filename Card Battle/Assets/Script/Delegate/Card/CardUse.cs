@@ -20,13 +20,10 @@ public class CardUse : MonoBehaviour
             }
         }
 
-        receiver.info.Hp -= CalculateDmg(sender.info.AttackDmg, card.info.Dice, card.info.EffVal, 
-            CalculateEffect(card.info.Type, receiver.info.Weapon));
-
         Debug.Log(receiver.info.Hp);
     }
 
-    int CalculateDmg(int attackDmg, int dice, int effVal, float effectiveness)
+    protected int CalculateDmg(int attackDmg, int dice, int effVal, float effectiveness)
     {
         return (int)Mathf.Round((attackDmg + dice + effVal) * effectiveness);
     }
@@ -37,7 +34,7 @@ public class CardUse : MonoBehaviour
     /// <param name="type1">사용한 카드의 타입</param>
     /// <param name="type2">공격받는 캐릭터의 타입</param>
     /// <returns>상성이 계산된 float값 리턴</returns>
-    float CalculateEffect(WeaponType type1, WeaponType type2)
+    protected float CalculateEffect(WeaponType type1, WeaponType type2)
     {
         if (type2 == WeaponType.BOSS) return 0.5f;
 
