@@ -33,6 +33,8 @@ public class DefaultCharacter
 
     public int Defense { get => defense; set => defense = value; } //플레이어 방어력
 
+    int maxHp;
+    public int MaxHp { get => hp; set => hp = value; }
 
     int hp; //캐릭터 체력 
 
@@ -44,7 +46,7 @@ public class DefaultCharacter
         }
         set
         {
-            hp = value <= 0 ? 0 : value;
+            hp = value <= 0 ? 0 : (value > MaxHp ? hp = MaxHp : hp = value);
         }
     }
     
@@ -59,12 +61,13 @@ public class DefaultCharacter
 
     public delegate void Use();
 
-    public DefaultCharacter(int id, string name, int level, int hp, int attackDmg, int defense, List<GameObject> cards, WeaponType weapon, Sprite img)
+    public DefaultCharacter(int id, string name, int level, int maxHp, int attackDmg, int defense, List<GameObject> cards, WeaponType weapon, Sprite img)
     {
         this.id = id;
         this.name = name;
         this.level = level;
-        this.hp = hp;
+        this.maxHp = maxHp;
+        hp = this.maxHp;
         this.attackDmg = attackDmg;
         this.defense = defense;
         this.cards = cards;
