@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 public class BattleManager : MonoBehaviour
 {
+    public static BattleManager Bm;
     public enum State
     {
         //대기 상태
@@ -16,11 +17,25 @@ public class BattleManager : MonoBehaviour
         EnemyTurn
     }
 
+    public GameObject player;
+    public GameObject enemy;
     public List<GameObject> playerdDeck;
-    public List<GameObject> enemyDack;
+    public List<GameObject> enemyDeck;
+    public List<Card> playerCards;
+    public List<Card> enemyCards;
+
     public CardManager cardManager;
-    [SerializeField] Transform instanc;
-    [SerializeField] Transform my;
+    public bool myCard;
+    [SerializeField] Transform myDeckPosition;
+    [SerializeField] Transform enemyDeckPosition;
+    [SerializeField] Transform myCardUp;
+    [SerializeField] Transform myCardDown;
+    [SerializeField] Transform enemyCardUp;
+    [SerializeField] Transform enemyCardDown;
+
+
+    Card selectCard;
+
 
     /*public State state; //지금 턴 상태
     public float timer; //현재 남은 시간
@@ -29,21 +44,38 @@ public class BattleManager : MonoBehaviour
     public Slider timerSlider; //타이머 슬라이더
     public TextMeshPro timerText; //타이머 시간*/
 
-    private void Start()
+    private void Awake()
     {
+        if (Bm == null)
+        {
+            Bm = this;
+        }
+
         foreach (var character in GameObject.FindGameObjectsWithTag("Player"))
             character.GetComponent<Character>().Init();
 
+        cardManager.Init();
+    }
+    private void Start()
+    {
+        myCard = true;
         CardCombine();
-        enemyDack = cardManager.enemyCardObjs;
+        myCard = false;
+        CardCombine();
     }
 
     private void Update()
     {
-       if (Input.GetKeyDown(KeyCode.Alpha1))
-       {
-          Test();
-       }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            myCard = true;
+            Test();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            myCard = false;
+            Test();
+        }
     }
 
     private void Test()
@@ -52,26 +84,40 @@ public class BattleManager : MonoBehaviour
         {
             CardCombine();
         }
-        var Card = Instantiate(playerdDeck[0], new Vector2(instanc.transform.position.x, instanc.transform.position.y),Quaternion.identity); 
-        playerdDeck!.RemoveAt(0);
-        //Card.transform.position = Vector2.Lerp(transform.position, my.transform.position , 0.05f );
-        Card.transform.position = Vector2.MoveTowards(transform.position, my.transform.position, 2);
+        if (enemyDeck.Count <= 0)
+        {
+            CardCombine();
+        }
+
+        Add();
     }
 
     void CardCombine()
     {
-        for (int i = 0; i < cardManager.playerCardObjs.Count; i++)
+        if (myCard && playerdDeck.Count == 0)
         {
-            playerdDeck.Add(cardManager.playerCardObjs[i]);
+            for (int i = 0; i < cardManager.playerCardObjs.Count; i++)
+            {
+                playerdDeck.Add(cardManager.playerCardObjs[i]);
+            }
+
+            for (int i = 0; i < playerdDeck.Count; i++)
+            {
+                int x = Random.Range(0, playerdDeck.Count);
+                var temp = playerdDeck[i];
+                playerdDeck[i] = playerdDeck[x];
+                playerdDeck[x] = temp;
+            }
         }
-      
-        for (int i = 0; i < playerdDeck.Count; i++)
+
+        if (!myCard && enemyDeck.Count == 0)
         {
-            int x = Random.Range(0, playerdDeck.Count);
-            var temp = playerdDeck[i];
-            playerdDeck[i] = playerdDeck[x];
-            playerdDeck[x] = temp;
+            for (int i = 0; i < cardManager.enemyCardObjs.Count; i++)
+            {
+                enemyDeck.Add(cardManager.enemyCardObjs[i]);
+            }
         }
+
     }
 
     public void StateTurn()
@@ -113,5 +159,125 @@ public class BattleManager : MonoBehaviour
     public void BattleResult()
     {
         //전투 결과
+    }
+    public void CardMouseOver(Card card)
+    {
+        selectCard = card;
+
+
+    }
+    public void CardMouseExit(Card card)
+    {
+        print("나가다니");
+    }
+
+
+    void Add()
+    {
+        if (myCard)
+        {
+            var cardObject = Instantiate(playerdDeck[0], new Vector2(myDeckPosition.transform.position.x, myDeckPosition.transform.position.y), Utlis.Qi);
+            var card = cardObject.GetComponent<Card>();
+            card.Init();
+
+            playerCards.Add(card);
+            playerdDeck!.RemoveAt(0);
+            CardAlignment(myCard);
+
+            StartCoroutine(CardAlignment(myCard));
+
+        }
+
+        if (!myCard)
+        {
+            var cardObject = Instantiate(enemyDeck[0], new Vector2(enemyDeckPosition.transform.position.x, enemyDeckPosition.transform.position.y), Utlis.Qi);
+            var card = cardObject.GetComponent<Card>();
+            card.Init();
+
+            enemyCards.Add(card);
+            enemyDeck!.RemoveAt(0);
+
+
+            StartCoroutine(CardAlignment(myCard));
+            CardAlignment(myCard);
+        }
+
+
+    }
+
+    IEnumerator CardAlignment(bool isMine)
+    {
+        List<PRS> originCardPRSs = new List<PRS>();
+
+        if (isMine)
+            originCardPRSs = RoundAlignment(myCardUp, myCardDown, playerCards.Count, -6.74f, Vector3.one * 2.5f); ;
+        if (!isMine)
+            originCardPRSs = RoundAlignment(enemyCardUp, enemyCardDown, enemyCards.Count, 6.74f, Vector3.one * 2.5f);
+
+        var targetCards = isMine ? playerCards : enemyCards;
+
+        for (int i = 0; i < targetCards.Count; i++)
+        {
+            var targetCard = targetCards[i];
+
+            targetCard.originPRS = originCardPRSs[i];
+
+            while (Vector2.Distance(targetCard.transform.position, targetCard.originPRS.pos) >= 0.1f)
+            {
+                targetCard.MoveTransform(targetCard.originPRS, true);
+                yield return null;
+            }
+        }
+        //yield return null;
+    }
+
+    List<PRS> RoundAlignment(Transform upTR, Transform downTR, int objcount, float height, Vector3 scale)
+    {
+        float[] objLerps = new float[objcount];
+        List<PRS> results = new List<PRS>(objcount);
+
+        switch (objcount)
+        {
+            case 1:
+                objLerps = new float[] { 0 };
+                break;
+            case 2:
+                objLerps = new float[] { 0, 0.2f };
+                break;
+            case 3:
+                objLerps = new float[] { 0, 0.2f, 0.4f };
+                break;
+            case 4:
+                objLerps = new float[] { 0, 0.2f, 0.4f, 0.6f };
+                break;
+            case 5:
+                objLerps = new float[] { 0, 0.2f, 0.4f, 0.6f, 0.8f };
+                break;
+            case 6:
+                objLerps = new float[] { 0, 0.2f, 0.4f, 0.6f, 0.8f, 1 };
+                break;
+            default:
+                float interval = 1f / (objcount - 1);
+                for (int i = 0; i < objcount; i++)
+                {
+                    objLerps[i] = interval * i;
+                }
+                break;
+        }
+
+        for (int i = 0; i < objcount; i++)
+        {
+            var targetPos = Vector2.Lerp(upTR.position, downTR.position, objLerps[i]);
+            var targetRot = Utlis.Qi;
+
+            if (objcount >= 7)
+            {
+                targetPos.x = height;
+            }
+
+            results.Add(new PRS(targetPos, targetRot, scale));
+        }
+
+        return results;
     }
 }
