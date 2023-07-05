@@ -45,9 +45,9 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    void Test()
+    /*void Test()
     {
-        // foreach (var card in playerCards)
-        // card.info.use(player.GetComponent<Character>(), enemy.GetComponent<Character>());
-    }
+        foreach (var card in playerCards)
+            card.info.use(player.GetComponent<Character>(), enemy.GetComponent<Character>());
+    }*/
 }
