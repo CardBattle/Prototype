@@ -23,18 +23,56 @@ public class Card : MonoBehaviour
     [SerializeField]
     private List<Buff> buffs;
 
+
+
+    public PRS originPRS;
     public void Init()
     {
         buffs = GetComponents<Buff>().ToList();
         foreach (Buff buff in buffs)
         {
-            if(buff != null)
+            if (buff != null)
                 buff.Init();
         }
         info = new(id, type, _name, buffs, effVal, img);
 
         GetComponent<CardUse>().Init();
     }
+
+    private void OnMouseOver()
+    {
+        BattleManager.Bm.CardMouseOver(this);
+    }
+    private void OnMouseExit()
+    {
+        BattleManager.Bm.CardMouseExit(this);
+    }
+    private void OnMouseUp()
+    {
+
+    }
+
+    private void OnMouseDown()
+    {
+
+    }
+
+    public void MoveTransform(PRS prs, bool Lerp, int Speed = 10)
+    {
+        if (Lerp)
+        {
+            transform.position = Vector3.Lerp(transform.position, prs.pos, Speed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, prs.rot, Speed * Time.deltaTime);
+            transform.localScale = Vector3.Lerp(transform.localScale, prs.scale, Speed * Time.deltaTime);
+        }
+        if (!Lerp)
+        {
+            transform.position = prs.pos;
+            transform.rotation = prs.rot;
+            transform.localScale = prs.scale;
+        }
+    }
+
 
     public void Test()
     {
