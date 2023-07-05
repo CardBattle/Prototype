@@ -163,12 +163,11 @@ public class BattleManager : MonoBehaviour
     public void CardMouseOver(Card card)
     {
         selectCard = card;
-
-
+        
     }
     public void CardMouseExit(Card card)
     {
-        print("나가다니");
+        print("나가다니");     
     }
 
 
