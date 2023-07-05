@@ -21,22 +21,23 @@ public class DefaultCard
     public int Level { get => level; set => level = value; }
 
     int dice;
-    public int Dice
+    public int Dice { get => dice; set => dice = value; }
+    public int RandomDice
     {
         get
         {
-            switch (level)
+            switch (Level)
             {
-                case 1: dice = Random.Range(1, 7);
+                case 1: Dice = Random.Range(1, 7);
                     break;
-                case 2: dice = Random.Range(2, 7);
+                case 2: Dice = Random.Range(2, 7);
                     break;
-                case 3: dice = Random.Range(3, 7);
+                case 3: Dice = Random.Range(3, 7);
                     break;
-                default: dice = 0;
+                default: Dice = 0;
                     break;
             }
-            return dice;
+            return Dice;
         }
     }
 
