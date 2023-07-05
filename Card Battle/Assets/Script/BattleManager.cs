@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Bm;
@@ -25,7 +26,11 @@ public class BattleManager : MonoBehaviour
     public List<Card> enemyCards;
 
     public CardManager cardManager;
+   
+    
     public bool myCard;
+    public bool cardSelect;
+     
     [SerializeField] Transform myDeckPosition;
     [SerializeField] Transform enemyDeckPosition;
     [SerializeField] Transform myCardUp;
@@ -34,7 +39,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField] Transform enemyCardDown;
 
 
-    Card selectCard;
+    public Card selectCard;
+
+    int order = 0;
+    int enemyOrder = 0;
 
 
     /*public State state; //지금 턴 상태
@@ -108,6 +116,11 @@ public class BattleManager : MonoBehaviour
                 playerdDeck[i] = playerdDeck[x];
                 playerdDeck[x] = temp;
             }
+
+            if (playerCards.Count == 0)
+            {
+
+            }
         }
 
         if (!myCard && enemyDeck.Count == 0)
@@ -116,6 +129,8 @@ public class BattleManager : MonoBehaviour
             {
                 enemyDeck.Add(cardManager.enemyCardObjs[i]);
             }
+
+            enemyOrder = 0;
         }
 
     }
@@ -163,11 +178,17 @@ public class BattleManager : MonoBehaviour
     public void CardMouseOver(Card card)
     {
         selectCard = card;
+        cardSelect = true;
+
+        card.GetComponent<Order>().DragOrder(cardSelect);
         
     }
     public void CardMouseExit(Card card)
     {
-        print("나가다니");     
+        selectCard = null;
+        cardSelect = false;
+
+        card.GetComponent<Order>().DragOrder(cardSelect);
     }
 
 
@@ -181,9 +202,9 @@ public class BattleManager : MonoBehaviour
 
             playerCards.Add(card);
             playerdDeck!.RemoveAt(0);
+            
+            card.GetComponent<Order>().SetOriginOrder(order++);
             CardAlignment(myCard);
-
-            StartCoroutine(CardAlignment(myCard));
 
         }
 
@@ -196,15 +217,14 @@ public class BattleManager : MonoBehaviour
             enemyCards.Add(card);
             enemyDeck!.RemoveAt(0);
 
-
-            StartCoroutine(CardAlignment(myCard));
-            CardAlignment(myCard);
+            card.GetComponent<Order>().SetOriginOrder(enemyOrder++);
+            CardAlignment(myCard);          
         }
 
 
     }
 
-    IEnumerator CardAlignment(bool isMine)
+    void CardAlignment(bool isMine)
     {
         List<PRS> originCardPRSs = new List<PRS>();
 
@@ -221,11 +241,11 @@ public class BattleManager : MonoBehaviour
 
             targetCard.originPRS = originCardPRSs[i];
 
-            while (Vector2.Distance(targetCard.transform.position, targetCard.originPRS.pos) >= 0.1f)
-            {
-                targetCard.MoveTransform(targetCard.originPRS, true);
-                yield return null;
-            }
+           // while (Vector2.Distance(targetCard.transform.position, targetCard.originPRS.pos) >= 0.1f)
+           // {
+                targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
+                
+          //  }
         }
         //yield return null;
     }

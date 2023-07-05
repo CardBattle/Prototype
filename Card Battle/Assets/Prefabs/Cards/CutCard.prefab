@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -7549491209215741638}
   - component: {fileID: -527743871940799088}
   - component: {fileID: -315109278961699801}
+  - component: {fileID: 1496403778371072177}
   - component: {fileID: 2490389268787206249}
   m_Layer: 0
   m_Name: CutCard
@@ -188,6 +189,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8edb41cba70a05343887510c0a3f84ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1496403778371072177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234368001717940415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ca9fe77e24abe49b820a8c77370a65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backOrders:
+  - {fileID: 1234368001717940414}
+  frontOrders:
+  - {fileID: 874461985735873367}
+  - {fileID: 5982858689727630169}
+  - {fileID: 712085908432087956}
+  sortingLayerName: 
 --- !u!60 &2490389268787206249
 PolygonCollider2D:
   m_ObjectHideFlags: 0

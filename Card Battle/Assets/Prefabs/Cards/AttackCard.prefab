@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7437580933446921475}
   - component: {fileID: 7437580933446921473}
   - component: {fileID: -4744555596837998474}
+  - component: {fileID: -7379230615761293389}
   m_Layer: 0
   m_Name: AttackCard
   m_TagString: Untagged
@@ -153,3 +154,15 @@ PolygonCollider2D:
       - {x: -0.5877852, y: -0.80901706}
       - {x: 0.58778536, y: -0.80901694}
       - {x: 0.9510565, y: 0.30901712}
+--- !u!114 &-7379230615761293389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7437580933446921501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ca9fe77e24abe49b820a8c77370a65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

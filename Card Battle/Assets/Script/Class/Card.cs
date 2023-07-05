@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using DG.Tweening;
 
 public class Card : MonoBehaviour
 {
@@ -57,21 +58,38 @@ public class Card : MonoBehaviour
 
     }
 
-    public void MoveTransform(PRS prs, bool Lerp, int Speed = 10)
+
+    public void MoveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
     {
-        if (Lerp)
+        if (useDotween)
         {
-            transform.position = Vector3.Lerp(transform.position, prs.pos, Speed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, prs.rot, Speed * Time.deltaTime);
-            transform.localScale = Vector3.Lerp(transform.localScale, prs.scale, Speed * Time.deltaTime);
+            transform.DOMove(prs.pos, dotweenTime);
+            transform.DORotateQuaternion(prs.rot, dotweenTime);
+            transform.DOScale(prs.scale, dotweenTime);
         }
-        if (!Lerp)
+        else
         {
             transform.position = prs.pos;
             transform.rotation = prs.rot;
             transform.localScale = prs.scale;
         }
     }
+   
+    /* public void MoveTransform(PRS prs, bool Lerp, int Speed = 10)
+     {
+         if (Lerp)
+         {
+             transform.position = Vector3.Lerp(transform.position, prs.pos, Speed * Time.deltaTime);
+             transform.rotation = Quaternion.Lerp(transform.rotation, prs.rot, Speed * Time.deltaTime);
+             transform.localScale = Vector3.Lerp(transform.localScale, prs.scale, Speed * Time.deltaTime);
+         }
+         if (!Lerp)
+         {
+             transform.position = prs.pos;
+             transform.rotation = prs.rot;
+             transform.localScale = prs.scale;
+         }
+     }*/
 
 
     public void Test()

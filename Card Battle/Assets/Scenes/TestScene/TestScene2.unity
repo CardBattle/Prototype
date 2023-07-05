@@ -175,12 +175,14 @@ MonoBehaviour:
   enemyCards: []
   cardManager: {fileID: 8508805978501511359}
   myCard: 0
+  cardSelect: 0
   myDeckPosition: {fileID: 654542579}
   enemyDeckPosition: {fileID: 402898360}
   myCardUp: {fileID: 1401565411}
   myCardDown: {fileID: 1110365733}
   enemyCardUp: {fileID: 1836026697}
   enemyCardDown: {fileID: 621805325}
+  selectCard: {fileID: 0}
 --- !u!1 &402898359
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +307,71 @@ Transform:
   m_Father: {fileID: 1639372949}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1084365314
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940408, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+      propertyPath: m_Name
+      value: CutCard
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f751c750d92869945a5e628b76305f9c, type: 3}
 --- !u!1 &1110365732
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,7 +614,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802386868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -673,9 +740,10 @@ MonoBehaviour:
   weapon: 6
   img: {fileID: 21300000, guid: 9125c204f566db048a92ebcb64d9d14a, type: 3}
   cards:
-  - {fileID: 4078094028994227434, guid: 7510eeca71a308640a5bf49ca3dc98d0, type: 3}
-  - {fileID: 4078094028994227434, guid: 7510eeca71a308640a5bf49ca3dc98d0, type: 3}
-  - {fileID: 4078094028994227434, guid: 7510eeca71a308640a5bf49ca3dc98d0, type: 3}
+  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
 --- !u!1 &220197811883665581
 GameObject:
   m_ObjectHideFlags: 0
