@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using TMPro;
 using DG.Tweening;
 
 public class Card : MonoBehaviour
@@ -22,13 +23,26 @@ public class Card : MonoBehaviour
     [SerializeField]
     private Sprite img;
     [SerializeField]
+    private Sprite frontCard;
+    [SerializeField]
+    private Sprite backCard;
+    [SerializeField]
     private List<Buff> buffs;
 
+    [SerializeField]
+    private SpriteRenderer cardimg;
+    [SerializeField]
+    private TextMeshPro name;
+    [SerializeField]
+    private TextMeshPro effect;
 
+    public bool myCard;
 
+    public bool cardSelect;
     public PRS originPRS;
     public void Init()
     {
+
         buffs = GetComponents<Buff>().ToList();
         foreach (Buff buff in buffs)
         {
@@ -42,23 +56,54 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        BattleManager.Bm.CardMouseOver(this);
+        if (myCard)
+            BattleManager.Bm.CardMouseOver(this);
     }
     private void OnMouseExit()
     {
-        BattleManager.Bm.CardMouseExit(this);
+        if (myCard)
+            BattleManager.Bm.CardMouseExit(this);
     }
-    private void OnMouseUp()
-    {
-
-    }
-
     private void OnMouseDown()
     {
-
+        if (myCard)
+        {
+            if (cardSelect)
+            {
+                BattleManager.Bm.CardSelectDown(this);
+            }
+            else
+            {
+                BattleManager.Bm.CardMoustDown(this);
+            }
+        }
     }
 
+    public void CardFront(bool myCard)
+    {
+        this.myCard = myCard;
 
+        if (myCard)
+        {
+            cardimg.sprite = img;
+            name.text = _name;
+            effect.text = effVal.ToString();
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = backCard;
+            name.text = " ";
+            effect.text = " ";
+        }
+    }
+
+    public void EnemyCardFront()
+    {
+        gameObject.GetComponent<SpriteRenderer>().sprite = frontCard;
+        cardimg.sprite = img;
+        name.text = _name;
+        effect.text = effVal.ToString();
+    }
     public void MoveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
     {
         if (useDotween)
@@ -74,7 +119,7 @@ public class Card : MonoBehaviour
             transform.localScale = prs.scale;
         }
     }
-   
+
     /* public void MoveTransform(PRS prs, bool Lerp, int Speed = 10)
      {
          if (Lerp)

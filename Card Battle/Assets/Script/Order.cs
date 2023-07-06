@@ -9,20 +9,19 @@ public class Order : MonoBehaviour
     [SerializeField] string sortingLayerName;
 
     int order;
-   public void SetOriginOrder(int order)
-   {
+    public void SetOriginOrder(int order)
+    {
         this.order = order;
         SettingOrder(order);
-
-   }
+    }
 
     public void DragOrder(bool drag)
     {
         int order = this.order;
-        
+
         if (drag)
         {
-            SettingOrder(1000);
+            SettingOrder(100);
         }
         if (!drag)
         {
@@ -46,5 +45,5 @@ public class Order : MonoBehaviour
             renderer.sortingOrder = mulOrder + 1;
         }
     }
-    
+
 }

@@ -113,7 +113,14 @@ MonoBehaviour:
   effVal: 1
   level: 1
   img: {fileID: 21300000, guid: daf2ab606d4db0d4f9ecf4c02137d2a8, type: 3}
+  frontCard: {fileID: -508085829, guid: 484fe37f9a9b84149a46283bdab800a6, type: 3}
+  backCard: {fileID: -76479531, guid: 484fe37f9a9b84149a46283bdab800a6, type: 3}
   buffs: []
+  cardimg: {fileID: 874461985735873367}
+  name: {fileID: 3652763261947642595}
+  effect: {fileID: 1452142610391414668}
+  myCard: 0
+  cardSelect: 0
   originPRS:
     pos: {x: 0, y: 0, z: 0}
     rot: {x: 0, y: 0, z: 0, w: 0}
@@ -207,7 +214,7 @@ MonoBehaviour:
   - {fileID: 874461985735873367}
   - {fileID: 5982858689727630169}
   - {fileID: 712085908432087956}
-  sortingLayerName: 
+  sortingLayerName: Card
 --- !u!60 &2490389268787206249
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -218,7 +225,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -482,7 +489,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 6a7ac9e8c26b12440bf2b1da2ca97794, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -490,7 +497,7 @@ SpriteRenderer:
   m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &9210856706234189538

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System;
+using Random = UnityEngine.Random;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Bm;
@@ -12,25 +14,45 @@ public class BattleManager : MonoBehaviour
         //대기 상태
         WaitState,
 
+        //카드를 냈는지 안냈는지 체크
+        SelectCard,
+
+        //카드 결정후
+        CardDecision,
+
         //플레이어가 주사위가 더 높았을때
         PlayerTurn,
+
         //적에 주사위가 더 높았을때
         EnemyTurn
     }
-
+    //캐릭터
     public GameObject player;
     public GameObject enemy;
+
+    //내 덱이랑 드로우 리스트
     public List<GameObject> playerdDeck;
     public List<GameObject> enemyDeck;
     public List<Card> playerCards;
     public List<Card> enemyCards;
 
+    //카드 매니저
     public CardManager cardManager;
-   
-    
+
+    //
+    public TextMeshPro Selet;
+    //원래 있었던 내 카드 위치
+    public PRS originalPlace;
+
+    //내 상태
+    public State state;
+
+    //내덱인지 아닌지 체크
     public bool myCard;
-    public bool cardSelect;
-     
+    //내가 고른카드 위로 올라오게 하기
+    //public bool cardSelect;
+
+    //드로우 카드 위치 오브젝트
     [SerializeField] Transform myDeckPosition;
     [SerializeField] Transform enemyDeckPosition;
     [SerializeField] Transform myCardUp;
@@ -38,12 +60,11 @@ public class BattleManager : MonoBehaviour
     [SerializeField] Transform enemyCardUp;
     [SerializeField] Transform enemyCardDown;
 
-
+    public static Action<bool> OnAddCard;
     public Card selectCard;
 
     int order = 0;
     int enemyOrder = 0;
-
 
     /*public State state; //지금 턴 상태
     public float timer; //현재 남은 시간
@@ -63,78 +84,25 @@ public class BattleManager : MonoBehaviour
             character.GetComponent<Character>().Init();
 
         cardManager.Init();
+
+        OnAddCard = Add;
     }
     private void Start()
     {
-        myCard = true;
-        CardCombine();
-        myCard = false;
-        CardCombine();
+        StartCoroutine(StartGame(5));
     }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            myCard = true;
-            Test();
+            StartCoroutine(StartGame(1));
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            myCard = false;
-            Test();
+            enemyCards[0].GetComponent<Card>().EnemyCardFront();
         }
     }
-
-    private void Test()
-    {
-        if (playerdDeck.Count <= 0)
-        {
-            CardCombine();
-        }
-        if (enemyDeck.Count <= 0)
-        {
-            CardCombine();
-        }
-
-        Add();
-    }
-
-    void CardCombine()
-    {
-        if (myCard && playerdDeck.Count == 0)
-        {
-            for (int i = 0; i < cardManager.playerCardObjs.Count; i++)
-            {
-                playerdDeck.Add(cardManager.playerCardObjs[i]);
-            }
-
-            for (int i = 0; i < playerdDeck.Count; i++)
-            {
-                int x = Random.Range(0, playerdDeck.Count);
-                var temp = playerdDeck[i];
-                playerdDeck[i] = playerdDeck[x];
-                playerdDeck[x] = temp;
-            }
-
-            if (playerCards.Count == 0)
-            {
-
-            }
-        }
-
-        if (!myCard && enemyDeck.Count == 0)
-        {
-            for (int i = 0; i < cardManager.enemyCardObjs.Count; i++)
-            {
-                enemyDeck.Add(cardManager.enemyCardObjs[i]);
-            }
-
-            enemyOrder = 0;
-        }
-
-    }
-
     public void StateTurn()
     {
         //턴이 시작될때 여기서 플레이어 버프 디버프 피관리 체크
@@ -175,24 +143,107 @@ public class BattleManager : MonoBehaviour
     {
         //전투 결과
     }
+
+    void CardCombine(bool myCard)
+    {
+        if (myCard && playerdDeck.Count == 0)
+        {
+            for (int i = 0; i < cardManager.playerCardObjs.Count; i++)
+            {
+                playerdDeck.Add(cardManager.playerCardObjs[i]);
+            }
+
+            for (int i = 0; i < playerdDeck.Count; i++)
+            {
+                int x = Random.Range(0, playerdDeck.Count);
+                var temp = playerdDeck[i];
+                playerdDeck[i] = playerdDeck[x];
+                playerdDeck[x] = temp;
+            }
+        }
+
+        if (!myCard && enemyDeck.Count == 0)
+        {
+            for (int i = 0; i < cardManager.enemyCardObjs.Count; i++)
+            {
+                enemyDeck.Add(cardManager.enemyCardObjs[i]);
+            }
+        }
+
+    }
+
+    public void CardMoustDown(Card card)
+    {
+        if (state == State.CardDecision)
+            return;
+
+        if (state == State.WaitState)
+        {
+            selectCard = card;
+
+            originalPlace = card.originPRS;
+            print(originalPlace.pos);
+
+            card.originPRS = new PRS(new Vector2(-1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
+            card.MoveTransform(card.originPRS, false);
+
+            card.cardSelect = true;
+
+            state = State.SelectCard;
+            CardAlignment(myCard);
+
+        }
+        else if (state == State.SelectCard)
+        {
+            selectCard.cardSelect = false;
+            selectCard.originPRS = originalPlace;
+            selectCard.MoveTransform(selectCard.originPRS, false);
+
+            originalPlace = card.originPRS;
+            selectCard = card;
+
+            card.originPRS = new PRS(new Vector2(-1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
+            card.MoveTransform(card.originPRS, false);
+
+            card.cardSelect = true;
+
+            CardAlignment(myCard);
+        }
+
+    }
+
+    public void CardSelectDown(Card card)
+    {
+        selectCard.originPRS = originalPlace;
+        card.MoveTransform(card.originPRS, false);
+
+        card.cardSelect = false;
+    }
     public void CardMouseOver(Card card)
     {
-        selectCard = card;
-        cardSelect = true;
+        card.GetComponent<Order>().DragOrder(true);
 
-        card.GetComponent<Order>().DragOrder(cardSelect);
-        
     }
     public void CardMouseExit(Card card)
     {
-        selectCard = null;
-        cardSelect = false;
-
-        card.GetComponent<Order>().DragOrder(cardSelect);
+        card.GetComponent<Order>().DragOrder(false);
     }
 
+    IEnumerator StartGame(int start)
+    {
+        CardCombine(true);
+        CardCombine(false);
 
-    void Add()
+        for (int i = 0; i < start; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            OnAddCard?.Invoke(true);
+            yield return new WaitForSeconds(0.1f);
+            OnAddCard?.Invoke(false);
+        }
+    }
+
+    void Add(bool myCard)
     {
         if (myCard)
         {
@@ -200,9 +251,10 @@ public class BattleManager : MonoBehaviour
             var card = cardObject.GetComponent<Card>();
             card.Init();
 
+            card.CardFront(myCard);
             playerCards.Add(card);
             playerdDeck!.RemoveAt(0);
-            
+
             card.GetComponent<Order>().SetOriginOrder(order++);
             CardAlignment(myCard);
 
@@ -214,17 +266,18 @@ public class BattleManager : MonoBehaviour
             var card = cardObject.GetComponent<Card>();
             card.Init();
 
+            card.CardFront(myCard);
             enemyCards.Add(card);
             enemyDeck!.RemoveAt(0);
 
             card.GetComponent<Order>().SetOriginOrder(enemyOrder++);
-            CardAlignment(myCard);          
+            CardAlignment(myCard);
         }
 
 
     }
 
-    void CardAlignment(bool isMine)
+    public void CardAlignment(bool isMine)
     {
         List<PRS> originCardPRSs = new List<PRS>();
 
@@ -241,11 +294,11 @@ public class BattleManager : MonoBehaviour
 
             targetCard.originPRS = originCardPRSs[i];
 
-           // while (Vector2.Distance(targetCard.transform.position, targetCard.originPRS.pos) >= 0.1f)
-           // {
-                targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
-                
-          //  }
+            // while (Vector2.Distance(targetCard.transform.position, targetCard.originPRS.pos) >= 0.1f)
+            // {
+            targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
+
+            //  }
         }
         //yield return null;
     }
