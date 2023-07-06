@@ -12,5 +12,6 @@ public class TestManager : MonoBehaviour
         
         
        GameObject.Find("CardManager").GetComponent<CardManager>().Init();
+       
     }
 }
