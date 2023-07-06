@@ -66,9 +66,9 @@ public class BattleManager : MonoBehaviour
 
     int order = 0;
     int enemyOrder = 0;
+    public float waitTimer = 3;
 
-    int min = 9;
-    float sec = 59;
+    //float timer = 10;
 
     //지금 턴 상태
     public State state;
@@ -95,51 +95,31 @@ public class BattleManager : MonoBehaviour
  
         cardManager.Init();       
         OnAddCard = Add;
+
+        state = State.CardDecision;
         
     }
     private void Start()
     {
-        StartCoroutine(StartGame(5));
-        timerText.text = "10:00";
+        timerText.text = "10.00";
+        StartCoroutine(StartGame(5));        
+        StateTurn();
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            StartCoroutine(StartGame(1));
+            OnAddCard?.Invoke(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             enemyCards[0].GetComponent<Card>().EnemyCardFront();
         }
-
-        if (min > 0)
-        {
-            sec -= Time.deltaTime;
-
-            if(sec <= 0)
-            {
-                sec = 59;
-                --min;
-            }
-
-            timerText.text = string.Format("{0:N2}:{0:N1}", min, (int)sec);
-        }
-        else
-        {
-            min = 0;
-            sec = 0;
-        }
-
-      //  if ()
-       // timer -= Time.deltaTime;
-       // timerText.text = string.Format("{0:N2}:{0:N2}", timer);
     }
     public void StateTurn()
     {
-        //턴이 시작될때 여기서 플레이어 버프 디버프 피관리 체크
-        //플레이어나 적이 죽으면 BattleResult() 넘어감
+        StartCoroutine(WaitTimer());
     }
     public void DeckCheck()
     {
@@ -172,9 +152,12 @@ public class BattleManager : MonoBehaviour
         //카드 없을때 채워주는 메서드
         //여기서 카드 선택 메서드까지 기다렸다가 같이 DiceTurn() 으로 이동
     }
-    public void BattleResult()
+    public void BattleResult(int result)
     {
-        //전투 결과
+        if (result == 0) { timerText.text = "패배"; }
+        if (result == 1) { timerText.text = "승리"; }
+        if (result == 2) { timerText.text = "무승부"; }
+      
     }
 
     void CardCombine(bool myCard)
@@ -194,7 +177,6 @@ public class BattleManager : MonoBehaviour
                 playerdDeck[x] = temp;
             }
         }
-
         if (!myCard && enemyDeck.Count == 0)
         {
             for (int i = 0; i < cardManager.enemyCardObjs.Count; i++)
@@ -202,7 +184,6 @@ public class BattleManager : MonoBehaviour
                 enemyDeck.Add(cardManager.enemyCardObjs[i]);
             }
         }
-
     }
 
     public void CardMoustDown(Card card)
@@ -262,6 +243,34 @@ public class BattleManager : MonoBehaviour
         card.GetComponent<Order>().DragOrder(false);
     }
 
+    IEnumerator WaitTimer()
+    {
+        while (waitTimer >= 0)
+        {
+            waitTimer -= Time.deltaTime;
+            yield return null;
+        }
+
+        if (player.info.Hp == 0 && enemy.info.Hp != 0)
+        {
+            BattleResult(0);
+        }
+        else if (enemy.info.Hp == 0 && player.info.Hp != 0)
+        {
+            BattleResult(1);
+        }
+        else if (enemy.info.Hp == 0 && player.info.Hp == 0)
+        {
+            BattleResult(2);
+        }
+      
+        waitTimer = 3;
+
+        OnAddCard?.Invoke(true);
+        OnAddCard?.Invoke(false);
+        
+        yield return new WaitForSeconds(0.5f);    
+    }
     IEnumerator StartGame(int start)
     {
         CardCombine(true);
@@ -278,7 +287,7 @@ public class BattleManager : MonoBehaviour
 
     void Add(bool myCard)
     {
-        if (myCard)
+        if (myCard && playerdDeck.Count != 0 && playerCards.Count < 9)
         {
             var cardObject = Instantiate(playerdDeck[0], new Vector2(myDeckPosition.transform.position.x, myDeckPosition.transform.position.y), Utlis.Qi);
             var card = cardObject.GetComponent<Card>();
@@ -293,7 +302,7 @@ public class BattleManager : MonoBehaviour
 
         }
 
-        if (!myCard)
+        if (!myCard && enemyDeck.Count != 0 && enemyCards.Count < 11)
         {
             var cardObject = Instantiate(enemyDeck[0], new Vector2(enemyDeckPosition.transform.position.x, enemyDeckPosition.transform.position.y), Utlis.Qi);
             var card = cardObject.GetComponent<Card>();

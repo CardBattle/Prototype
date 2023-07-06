@@ -187,6 +187,7 @@ MonoBehaviour:
   enemyCardUp: {fileID: 1836026697}
   enemyCardDown: {fileID: 621805325}
   selectCard: {fileID: 0}
+  waitTimer: 3
   state: 0
   playerHpSlider: {fileID: 1124826776}
   enemyHpSlider: {fileID: 1785683267}
@@ -309,7 +310,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10:00
+  m_text: 10.00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ee930732be9670348b09a74fc787a34b, type: 2}
   m_sharedMaterial: {fileID: 8591071743086773296, guid: ee930732be9670348b09a74fc787a34b, type: 2}
@@ -2179,7 +2180,7 @@ MonoBehaviour:
   id: 1
   level: 25
   defense: 300
-  hp: 2000
+  hp: 3000
   attackDmg: 250
   weapon: 6
   img: {fileID: 21300000, guid: 9125c204f566db048a92ebcb64d9d14a, type: 3}
@@ -2325,6 +2326,8 @@ MonoBehaviour:
   - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
   - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
   - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
+  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
   - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
 --- !u!114 &3223454997996177616
 MonoBehaviour:

@@ -56,12 +56,12 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (myCard)
+        if (myCard && BattleManager.Bm.state != BattleManager.State.CardDecision)
             BattleManager.Bm.CardMouseOver(this);
     }
     private void OnMouseExit()
     {
-        if (myCard)
+        if (myCard && BattleManager.Bm.state != BattleManager.State.CardDecision)
             BattleManager.Bm.CardMouseExit(this);
     }
     private void OnMouseDown()
