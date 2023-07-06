@@ -27,8 +27,11 @@ public class BattleManager : MonoBehaviour
         EnemyTurn
     }
     //캐릭터
-    public GameObject player;
-    public GameObject enemy;
+    //public GameObject player;
+    //public GameObject enemy;
+
+    public Character player;
+    public Character enemy;
 
     //내 덱이랑 드로우 리스트
     public List<GameObject> playerdDeck;
@@ -44,9 +47,7 @@ public class BattleManager : MonoBehaviour
     //원래 있었던 내 카드 위치
     public PRS originalPlace;
 
-    //내 상태
-    public State state;
-
+    
     //내덱인지 아닌지 체크
     public bool myCard;
     //내가 고른카드 위로 올라오게 하기
@@ -66,12 +67,14 @@ public class BattleManager : MonoBehaviour
     int order = 0;
     int enemyOrder = 0;
 
-    /*public State state; //지금 턴 상태
-    public float timer; //현재 남은 시간
-    public Slider playerHp; // 플레이어 hp
-    public Slider enemyHp; // 적 hp
-    public Slider timerSlider; //타이머 슬라이더
-    public TextMeshPro timerText; //타이머 시간*/
+    int min = 9;
+    float sec = 59;
+
+    //지금 턴 상태
+    public State state;
+    public Slider playerHpSlider; // 플레이어 hp
+    public Slider enemyHpSlider; // 적 hp
+    public TextMeshPro timerText; //타이머 시간
 
     private void Awake()
     {
@@ -80,16 +83,24 @@ public class BattleManager : MonoBehaviour
             Bm = this;
         }
 
-        foreach (var character in GameObject.FindGameObjectsWithTag("Player"))
-            character.GetComponent<Character>().Init();
+        player.Init();  
+        enemy.Init();
+          
+        playerHpSlider.maxValue = player.info.MaxHp;    
+        enemyHpSlider.maxValue = enemy.info.MaxHp;
 
-        cardManager.Init();
+        playerHpSlider.value = player.info.Hp;
+        enemyHpSlider.value = enemy.info.Hp;
 
+ 
+        cardManager.Init();       
         OnAddCard = Add;
+        
     }
     private void Start()
     {
         StartCoroutine(StartGame(5));
+        timerText.text = "10:00";
     }
     private void Update()
     {
@@ -102,6 +113,28 @@ public class BattleManager : MonoBehaviour
         {
             enemyCards[0].GetComponent<Card>().EnemyCardFront();
         }
+
+        if (min > 0)
+        {
+            sec -= Time.deltaTime;
+
+            if(sec <= 0)
+            {
+                sec = 59;
+                --min;
+            }
+
+            timerText.text = string.Format("{0:N2}:{0:N1}", min, (int)sec);
+        }
+        else
+        {
+            min = 0;
+            sec = 0;
+        }
+
+      //  if ()
+       // timer -= Time.deltaTime;
+       // timerText.text = string.Format("{0:N2}:{0:N2}", timer);
     }
     public void StateTurn()
     {

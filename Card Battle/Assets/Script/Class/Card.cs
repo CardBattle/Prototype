@@ -32,7 +32,7 @@ public class Card : MonoBehaviour
     [SerializeField]
     private SpriteRenderer cardimg;
     [SerializeField]
-    private TextMeshPro name;
+    private TextMeshPro _Name;
     [SerializeField]
     private TextMeshPro effect;
 
@@ -86,13 +86,13 @@ public class Card : MonoBehaviour
         if (myCard)
         {
             cardimg.sprite = img;
-            name.text = _name;
+            _Name.text = _name;
             effect.text = effVal.ToString();
         }
         else
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = backCard;
-            name.text = " ";
+            _Name.text = " ";
             effect.text = " ";
         }
     }
@@ -101,7 +101,7 @@ public class Card : MonoBehaviour
     {
         gameObject.GetComponent<SpriteRenderer>().sprite = frontCard;
         cardimg.sprite = img;
-        name.text = _name;
+        _Name.text = _name;
         effect.text = effVal.ToString();
     }
     public void MoveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
