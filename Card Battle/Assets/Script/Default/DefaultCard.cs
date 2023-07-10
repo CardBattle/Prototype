@@ -1,10 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PropertyType
+{
+    ATTACK,
+    DEFENSE,
+}
+
 public class DefaultCard
 {
     int id;
     public int Id { get => id; }
+
+    PropertyType property;
+    public PropertyType Property { get => property; }
 
     WeaponType type;
     public WeaponType Type { get => type; }
@@ -13,7 +22,7 @@ public class DefaultCard
     public string Name { get => name; }
 
     public List<Buff> buffs;
-    
+
     int effVal; //효과수치
     public int EffVal { get => effVal; set => effVal = value; }
 
@@ -28,13 +37,17 @@ public class DefaultCard
         {
             switch (Level)
             {
-                case 1: Dice = Random.Range(1, 7);
+                case 1:
+                    Dice = Random.Range(1, 7);
                     break;
-                case 2: Dice = Random.Range(2, 7);
+                case 2:
+                    Dice = Random.Range(2, 7);
                     break;
-                case 3: Dice = Random.Range(3, 7);
+                case 3:
+                    Dice = Random.Range(3, 7);
                     break;
-                default: Dice = 0;
+                default:
+                    Dice = 0;
                     break;
             }
             return Dice;
@@ -46,10 +59,11 @@ public class DefaultCard
 
     public delegate void Use(Character sender, Character receiver);
     public Use use;
-    
-    public DefaultCard(int id, WeaponType type, string name, List<Buff> buffs, int effVal, Sprite img) //후에 버프 추가
+
+    public DefaultCard(int id, PropertyType property, WeaponType type, string name, List<Buff> buffs, int effVal, Sprite img) //후에 버프 추가
     {
         this.id = id;
+        this.property = property;
         this.type = type;
         this.name = name;
         this.buffs = buffs;
