@@ -13,6 +13,8 @@ public class Card : MonoBehaviour
     [SerializeField]
     private int id;
     [SerializeField]
+    private PropertyType property;
+    [SerializeField]
     private WeaponType type;
     [SerializeField]
     private string _name;
@@ -52,7 +54,7 @@ public class Card : MonoBehaviour
             if (buff != null)
                 buff.Init();
         }
-        info = new(id, type, _name, buffs, effVal, img);
+        info = new(id, property, type, _name, buffs, effVal, img);
 
         GetComponent<CardUse>().Init();
     }
