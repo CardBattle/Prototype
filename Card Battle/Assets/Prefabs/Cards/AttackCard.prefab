@@ -359,10 +359,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
-  type: 3
+  id: 0
+  type: 0
   _name: Attack
-  effVal: 500
+  effVal: 1
   level: 1
   img: {fileID: 21300000, guid: 9125c204f566db048a92ebcb64d9d14a, type: 3}
   frontCard: {fileID: -508085829, guid: 484fe37f9a9b84149a46283bdab800a6, type: 3}
@@ -371,7 +371,6 @@ MonoBehaviour:
   cardimg: {fileID: 6089527064789139156}
   _Name: {fileID: 1072726902480384153}
   effect: {fileID: 6732848033967560566}
-  myCard: 0
   cardSelect: 0
   originPRS:
     pos: {x: 0, y: 0, z: 0}

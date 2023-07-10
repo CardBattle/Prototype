@@ -32,9 +32,8 @@ public class BattleManager : MonoBehaviour
 
     //플레이어, 적 카드 정보 체크
     [SerializeField]  
-    private Decision playerDecision;
-    [SerializeField]
-    private EnemyDecision enemyDecision;
+    public Decision playerDecision;
+    public EnemyDecision enemyDecision;
 
     //플레이어, 적 덱이랑 드로우 리스트
     [SerializeField]
@@ -203,6 +202,8 @@ public class BattleManager : MonoBehaviour
 
         playerHpSlider.value = player.info.Hp;
         enemyHpSlider.value = enemy.info.Hp;
+
+        Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
 
         playerDice = 0;
         enemyDice = 0;
