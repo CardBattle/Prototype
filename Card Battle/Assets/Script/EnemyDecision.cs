@@ -6,37 +6,40 @@ using UnityEngine.UI;
 
 public class EnemyDecision : MonoBehaviour
 {
-    Card card;
-    public Button button;
-
-
+    // 콜라이더에 부딪힌 카드 정보
+    private Card Importedcard;  
+    // 배틀매니저에서 넘기기위한 카드 정보
+    public Card card;
+    // 전에 쓴 카드를 삭제하기 위해 있는 변수
+    public bool cardCheck;
+  
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        card = collision.gameObject.GetComponent<Card>();
-        BattleManager.Bm.enemyCards.Remove(card);
-        print("카드가 존재함");
+        Importedcard = collision.gameObject.GetComponent<Card>();
+
+        DecisionButtom();      
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        card = null;
+        Importedcard = null;
     }
 
     public void DecisionButtom()
     {
-        if (card == null)
+        if (Importedcard == null)
             return;
 
-        card.info.use(BattleManager.Bm.player.GetComponent<Character>(), BattleManager.Bm.enemy.GetComponent<Character>());
+        card = Importedcard;
+        cardCheck = true;
 
-        BattleManager.Bm.playerCards.Remove(card);
-        BattleManager.Bm.CardAlignment(true);
+        BattleManager.Bm.enemyCards.Remove(Importedcard);
+        BattleManager.Bm.enemyDeleteCards.Add(Importedcard);
 
-        BattleManager.Bm.state = BattleManager.State.WaitState;
+        BattleManager.Bm.CardAlignment(false);
 
-        Destroy(card.gameObject);
-
-        // button.interactable = false;
+        BattleManager.Bm.enemyDice = card.info.RandomDice;
+        Importedcard.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
     }
 }
 

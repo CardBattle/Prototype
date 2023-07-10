@@ -110,7 +110,7 @@ MonoBehaviour:
   id: 0
   type: 0
   _name: Cut
-  effVal: 1
+  effVal: 500
   level: 1
   img: {fileID: 21300000, guid: daf2ab606d4db0d4f9ecf4c02137d2a8, type: 3}
   frontCard: {fileID: -508085829, guid: 484fe37f9a9b84149a46283bdab800a6, type: 3}

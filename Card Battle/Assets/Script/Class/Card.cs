@@ -36,9 +36,12 @@ public class Card : MonoBehaviour
     [SerializeField]
     private TextMeshPro effect;
 
-    public bool myCard;
+    // 내 카드인지 아닌지 체크하는 변수
+    private bool myCard;
 
+    // 카드위치를 바꾸기 위한 변수
     public bool cardSelect;
+    // 카드 윈래 위치를 저장하는 클래스
     public PRS originPRS;
     public void Init()
     {
@@ -119,24 +122,6 @@ public class Card : MonoBehaviour
             transform.localScale = prs.scale;
         }
     }
-
-    /* public void MoveTransform(PRS prs, bool Lerp, int Speed = 10)
-     {
-         if (Lerp)
-         {
-             transform.position = Vector3.Lerp(transform.position, prs.pos, Speed * Time.deltaTime);
-             transform.rotation = Quaternion.Lerp(transform.rotation, prs.rot, Speed * Time.deltaTime);
-             transform.localScale = Vector3.Lerp(transform.localScale, prs.scale, Speed * Time.deltaTime);
-         }
-         if (!Lerp)
-         {
-             transform.position = prs.pos;
-             transform.rotation = prs.rot;
-             transform.localScale = prs.scale;
-         }
-     }*/
-
-
     public void Test()
     {
         Debug.Log($"id: {info.Id}\ntype:{info.Type}\nname: {info.Name}\n" +

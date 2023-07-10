@@ -20,38 +20,46 @@ public class BattleManager : MonoBehaviour
         //카드 결정후
         CardDecision,
 
-        //플레이어가 주사위가 더 높았을때
-        PlayerTurn,
-
-        //적에 주사위가 더 높았을때
-        EnemyTurn
+        //카드 정리
+        DestroyCard,     
     }
-    //캐릭터
-    //public GameObject player;
-    //public GameObject enemy;
 
-    public Character player;
-    public Character enemy;
+    //플레이어, 적 정보와 덱 체크
+    [SerializeField]
+    private Character player;
+    [SerializeField]
+    private Character enemy;
 
-    //내 덱이랑 드로우 리스트
-    public List<GameObject> playerdDeck;
-    public List<GameObject> enemyDeck;
+    //플레이어, 적 카드 정보 체크
+    [SerializeField]  
+    private Decision playerDecision;
+    [SerializeField]
+    private EnemyDecision enemyDecision;
+
+    //플레이어, 적 덱이랑 드로우 리스트
+    [SerializeField]
+    private List<GameObject> playerDeck;
+    [SerializeField]
+    private List<GameObject> enemyDeck;
     public List<Card> playerCards;
     public List<Card> enemyCards;
 
+    // 전에 쓴 카드들 삭제하기 위한 리스트
+    public List<Card> playerDeleteCards;
+    public List<Card> enemyDeleteCards;
+
+    //카드매니저
+    [SerializeField]
+    private CardManager cardManager;
+
+
     //카드 매니저
-    public CardManager cardManager;
 
-    //
-    public TextMeshPro Selet;
+    [SerializeField]
+    private TextMeshPro Selet;
     //원래 있었던 내 카드 위치
-    public PRS originalPlace;
-
-    
-    //내덱인지 아닌지 체크
-    public bool myCard;
-    //내가 고른카드 위로 올라오게 하기
-    //public bool cardSelect;
+    [SerializeField]
+    private PRS originalPlace;
 
     //드로우 카드 위치 오브젝트
     [SerializeField] Transform myDeckPosition;
@@ -61,20 +69,40 @@ public class BattleManager : MonoBehaviour
     [SerializeField] Transform enemyCardUp;
     [SerializeField] Transform enemyCardDown;
 
-    public static Action<bool> OnAddCard;
-    public Card selectCard;
+    //Add메서드 하기 편하게 넣어본 이벤트
+    private static Action<bool> OnAddCard;
+    
+    //Decision 클래스에서 넘겨받은 카드 정보를 저장하는 클래스
+    private Card selectCard;
 
-    int order = 0;
-    int enemyOrder = 0;
-    public float waitTimer = 3;
 
-    //float timer = 10;
 
-    //지금 턴 상태
+    //카드 이미지들 순서
+    private int order = 0;
+    private int enemyOrder = 0;
+   
+    // 전에 쓴 카드들 이미지들 순서
+    private int sortingCard = 0;
+    private int enemySortingCard = 0;
+
+    // 전전에 쓴 카드 오브젝트 삭제하기 위한 변수
+    private int turnCount = 0;
+
+    // 다이스 체크
+    public int playerDice = 0;
+    public int enemyDice = 0;
+
+    // 타이머
+    public float timer;
+    
+    // 플레이어 동작
     public State state;
-    public Slider playerHpSlider; // 플레이어 hp
-    public Slider enemyHpSlider; // 적 hp
-    public TextMeshPro timerText; //타이머 시간
+    [SerializeField]
+    private Slider playerHpSlider; // 플레이어 hp 슬라이더
+    [SerializeField]
+    private Slider enemyHpSlider; // 적 hp 슬라이더
+    [SerializeField]
+    private  TextMeshPro timerText; //타이머 텍스트
 
     private void Awake()
     {
@@ -97,11 +125,12 @@ public class BattleManager : MonoBehaviour
         OnAddCard = Add;
 
         state = State.CardDecision;
-        
+
+        timerText.text = "10.00";
+
     }
     private void Start()
-    {
-        timerText.text = "10.00";
+    {     
         StartCoroutine(StartGame(5));        
         StateTurn();
     }
@@ -117,11 +146,13 @@ public class BattleManager : MonoBehaviour
             enemyCards[0].GetComponent<Card>().EnemyCardFront();
         }
     }
-    public void StateTurn()
+    private void StateTurn()
     {
+        playerDecision.cardPresence = false;
+
         StartCoroutine(WaitTimer());
     }
-    public void DeckCheck()
+    /*public void DeckCheck()
     {
         //플레이어나 적 덱에 카드가 있는지 체크
         //없으면 DeckPull()로 이동
@@ -130,51 +161,91 @@ public class BattleManager : MonoBehaviour
     {
         //카드 드로우 턴
         //드로우 할 카드 없으면 대기
-    }
-    public void CardSelectionTurn()
+    }*/
+    private void CardSelectionTurn()
     {
-        //여기서 타이머 체크
-        //카드 선택
+        state = State.WaitState;
+        StartCoroutine(Timer());
+
+        if (enemyCards.Count != 0)
+        {
+            enemyCards[0]?.MoveTransform(enemyCards[0].originPRS, true, 0.7f);
+        }    
     }
-    public void DiceTurn()
+    private void DiceTurn()
     {
-        //카드 선택을 안했거나 덱이 없을땐 0으로 초기값변경
-        //플레이어 적 주사위 체크
+        if (playerDecision.card == null && playerDice == 0) { playerDice = 0; }
+        if (enemyDecision.card == null && enemyDice == 0) { enemyDice = 0; }
+
+        print($"아군 다이스{playerDice}");
+        print($"적군 다이스{enemyDice}");
+
+        if (enemyDecision.card != null)     
+            enemyDecision.card.EnemyCardFront();
+
+        if (playerDice > enemyDice)
+        {
+            playerDecision.card.info.use(player, enemy);
+        }
+        else if (playerDice == enemyDice)
+        {
+
+            playerDice = 0;
+            enemyDice = 0;
+
+            StartCoroutine(CardSorting());
+            return;
+        }
+        else
+        {
+            enemyDecision.card.info.use(enemy, player);
+        }
+
+        playerHpSlider.value = player.info.Hp;
+        enemyHpSlider.value = enemy.info.Hp;
+
+        playerDice = 0;
+        enemyDice = 0;
+
+        StartCoroutine(CardSorting());       
     }
     public void DiceResultTurn()
     {
         //주사위 높은사람이 카드 효과 발동
         //다시 StateTurn()으로 돌아감
     }
+      
     //여기는 다른 분기점
-    public void DeckPull()
+    /*public void DeckPull()
     {
         //카드 없을때 채워주는 메서드
         //여기서 카드 선택 메서드까지 기다렸다가 같이 DiceTurn() 으로 이동
-    }
-    public void BattleResult(int result)
+    }*/
+    
+    private void BattleResult(int result)
     {
         if (result == 0) { timerText.text = "패배"; }
         if (result == 1) { timerText.text = "승리"; }
         if (result == 2) { timerText.text = "무승부"; }
-      
+
+        StopAllCoroutines();     
     }
 
     void CardCombine(bool myCard)
     {
-        if (myCard && playerdDeck.Count == 0)
+        if (myCard && playerDeck.Count == 0)
         {
             for (int i = 0; i < cardManager.playerCardObjs.Count; i++)
             {
-                playerdDeck.Add(cardManager.playerCardObjs[i]);
+                playerDeck.Add(cardManager.playerCardObjs[i]);
             }
 
-            for (int i = 0; i < playerdDeck.Count; i++)
+            for (int i = 0; i < playerDeck.Count; i++)
             {
-                int x = Random.Range(0, playerdDeck.Count);
-                var temp = playerdDeck[i];
-                playerdDeck[i] = playerdDeck[x];
-                playerdDeck[x] = temp;
+                int x = Random.Range(0, playerDeck.Count);
+                var temp = playerDeck[i];
+                playerDeck[i] = playerDeck[x];
+                playerDeck[x] = temp;
             }
         }
         if (!myCard && enemyDeck.Count == 0)
@@ -196,7 +267,6 @@ public class BattleManager : MonoBehaviour
             selectCard = card;
 
             originalPlace = card.originPRS;
-            print(originalPlace.pos);
 
             card.originPRS = new PRS(new Vector2(-1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
             card.MoveTransform(card.originPRS, false);
@@ -204,8 +274,6 @@ public class BattleManager : MonoBehaviour
             card.cardSelect = true;
 
             state = State.SelectCard;
-            CardAlignment(myCard);
-
         }
         else if (state == State.SelectCard)
         {
@@ -219,9 +287,7 @@ public class BattleManager : MonoBehaviour
             card.originPRS = new PRS(new Vector2(-1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
             card.MoveTransform(card.originPRS, false);
 
-            card.cardSelect = true;
-
-            CardAlignment(myCard);
+            card.cardSelect = true;        
         }
 
     }
@@ -244,13 +310,37 @@ public class BattleManager : MonoBehaviour
     }
 
     IEnumerator WaitTimer()
-    {
-        while (waitTimer >= 0)
+    {      
+        yield return new WaitForSeconds(0.5f);
+     
+        if (playerCards.Count == 0)
         {
-            waitTimer -= Time.deltaTime;
-            yield return null;
+            StartCoroutine(DrawFullCard(true));
         }
 
+        if (enemyCards.Count == 0)
+        {
+            StartCoroutine(DrawFullCard(false));       
+        }
+
+        if (turnCount >= 2 && playerDecision.cardCheck && playerDeleteCards.Count >= 2)
+        {
+            Destroy(playerDeleteCards[0].gameObject);
+            playerDeleteCards.RemoveAt(0);
+            playerDeleteCards[0].GetComponent<Order>().SettingOrder(0);
+            sortingCard = 1;
+        }
+
+        if (turnCount >= 2 && enemyDecision.cardCheck && enemyDeleteCards.Count >= 2)
+        {
+            Destroy(enemyDeleteCards[0].gameObject);
+            enemyDeleteCards.RemoveAt(0);
+            enemyDeleteCards[0].GetComponent<Order>().SettingOrder(0);
+            enemySortingCard = 1;
+        }
+
+        yield return new WaitForSeconds(2);
+    
         if (player.info.Hp == 0 && enemy.info.Hp != 0)
         {
             BattleResult(0);
@@ -264,12 +354,46 @@ public class BattleManager : MonoBehaviour
             BattleResult(2);
         }
       
-        waitTimer = 3;
-
         OnAddCard?.Invoke(true);
         OnAddCard?.Invoke(false);
+
+        playerDecision.cardCheck = false;
+        enemyDecision.cardCheck = false;
+
+
+        yield return new WaitForSeconds(0.5f);
+
+        ++turnCount;
+        timer = 10;
+
+        if(enemyCards.Count != 0)
+        {
+            enemyCards[0].originPRS = new PRS(new Vector2(1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
+        }   
         
-        yield return new WaitForSeconds(0.5f);    
+        CardSelectionTurn();
+    }
+    IEnumerator Timer()
+    {
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            timerText.text = string.Format("{0:N2}", timer);
+            yield return new WaitForSeconds(0.001f);
+        }
+
+        if (timer <= 0)
+        {
+            timerText.text = "0.00";
+           
+            if (playerDecision.cardPresence == false && playerDecision.Importedcard != null)
+            {
+                playerDecision.DecisionButtom();
+            }
+        }
+  
+        state = State.CardDecision;
+        DiceTurn();
     }
     IEnumerator StartGame(int start)
     {
@@ -285,21 +409,66 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    IEnumerator DrawFullCard(bool myCard)
+    {  
+        for (int i = 0; i < 5; i++)
+        {                  
+            OnAddCard?.Invoke(myCard);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    IEnumerator CardSorting()
+    {
+        if (playerCards.Count == 0 && playerDeck.Count == 0)
+        {
+            CardCombine(true);
+        }
+        if (enemyCards.Count == 0 && enemyDeck.Count == 0)
+        {
+            CardCombine(false);
+        }
+
+        if (playerDecision.card != null)        
+            playerDecision.card.originPRS = new PRS(new Vector2(-4.3f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
+        if (enemyDecision.card != null)
+            enemyDecision.card.originPRS = new PRS(new Vector2(4.3f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
+
+        if (playerDecision.card != null)
+            playerDecision.card.GetComponent<Order>().SettingOrder(sortingCard++);
+        if (enemyDecision.card != null)
+            enemyDecision.card.GetComponent<Order>().SettingOrder(enemySortingCard++);
+
+        yield return new WaitForSeconds(0.3f);
+
+        if (playerDecision.card != null)
+            playerDecision.card.MoveTransform(playerDecision.card.originPRS, true, 0.7f);
+        if(enemyDecision.card != null)     
+            enemyDecision.card.MoveTransform(enemyDecision.card.originPRS, true, 0.7f);
+        
+        yield return new WaitForSeconds(0.1f);     
+
+        playerDecision.card = null;
+        enemyDecision.card = null;
+
+        
+        StateTurn();
+    }
+
     void Add(bool myCard)
     {
-        if (myCard && playerdDeck.Count != 0 && playerCards.Count < 9)
+        if (myCard && playerDeck.Count != 0 && playerCards.Count < 9)
         {
-            var cardObject = Instantiate(playerdDeck[0], new Vector2(myDeckPosition.transform.position.x, myDeckPosition.transform.position.y), Utlis.Qi);
+            var cardObject = Instantiate(playerDeck[0], new Vector2(myDeckPosition.transform.position.x, myDeckPosition.transform.position.y), Utlis.Qi);
             var card = cardObject.GetComponent<Card>();
             card.Init();
 
             card.CardFront(myCard);
             playerCards.Add(card);
-            playerdDeck!.RemoveAt(0);
+            playerDeck!.RemoveAt(0);
 
             card.GetComponent<Order>().SetOriginOrder(order++);
             CardAlignment(myCard);
-
         }
 
         if (!myCard && enemyDeck.Count != 0 && enemyCards.Count < 11)
@@ -333,16 +502,9 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < targetCards.Count; i++)
         {
             var targetCard = targetCards[i];
-
-            targetCard.originPRS = originCardPRSs[i];
-
-            // while (Vector2.Distance(targetCard.transform.position, targetCard.originPRS.pos) >= 0.1f)
-            // {
-            targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
-
-            //  }
-        }
-        //yield return null;
+            targetCard.originPRS = originCardPRSs[i];          
+            targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);          
+        }      
     }
 
     List<PRS> RoundAlignment(Transform upTR, Transform downTR, int objcount, float height, Vector3 scale)
