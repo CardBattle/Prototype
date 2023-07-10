@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3029999128819429700}
   - component: {fileID: 4632501163282215815}
   m_Layer: 0
-  m_Name: ArrowCard
+  m_Name: ArrowshotCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,9 +104,15 @@ MonoBehaviour:
   type: 1
   _name: Arrow
   effVal: 2
-  level: 2
+  level: 1
   img: {fileID: 21300000, guid: cee9dbe90b270c944ae1dabf41c93b10, type: 3}
+  frontCard: {fileID: 0}
+  backCard: {fileID: 0}
   buffs: []
+  cardimg: {fileID: 0}
+  _Name: {fileID: 0}
+  effect: {fileID: 0}
+  cardSelect: 0
   originPRS:
     pos: {x: 0, y: 0, z: 0}
     rot: {x: 0, y: 0, z: 0, w: 0}
