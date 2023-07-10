@@ -31,10 +31,8 @@ public class BattleManager : MonoBehaviour
     private Character enemy;
 
     //플레이어, 적 카드 정보 체크
-    [SerializeField]  
-    private Decision playerDecision;
-    [SerializeField]
-    private EnemyDecision enemyDecision;
+    public Decision playerDecision;
+    public EnemyDecision enemyDecision;
 
     //플레이어, 적 덱이랑 드로우 리스트
     [SerializeField]
@@ -185,21 +183,58 @@ public class BattleManager : MonoBehaviour
 
         if (playerDice > enemyDice)
         {
+            //Defense
+            if (enemyDecision.card.info.Id == 1)
+            {
+                enemyDecision.card.info.use(enemy, player);
+            }
+
             playerDecision.card.info.use(player, enemy);
+
+            if (playerDecision.card.info.Id == 1)
+            {
+                enemyDecision.card.info.use(enemy, player);
+            }
         }
         else if (playerDice == enemyDice)
         {
+            //Defense
+            if (playerDecision.card.info.Id == 1)
+            {
+                playerDecision.card.info.use(player, enemy);
+                enemyDecision.card.info.use(enemy, player);
+            }
+            else if(enemyDecision.card.info.Id == 1)
+            {
+                enemyDecision.card.info.use(enemy, player);
+                playerDecision.card.info.use(player, enemy);
+            }
 
-            playerDice = 0;
-            enemyDice = 0;
+            else
+            {
+                playerDice = 0;
+                enemyDice = 0;
+            }
 
             StartCoroutine(CardSorting());
             return;
         }
         else
         {
+            if (playerDecision.card.info.Id == 1)
+            {
+                playerDecision.card.info.use(player, enemy);
+            }
+
             enemyDecision.card.info.use(enemy, player);
+
+            if (enemyDecision.card.info.Id == 1)
+            {
+                playerDecision.card.info.use(player, enemy);
+            }
         }
+
+        Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
 
         playerHpSlider.value = player.info.Hp;
         enemyHpSlider.value = enemy.info.Hp;
