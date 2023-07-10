@@ -19,8 +19,6 @@ public class CardUse : MonoBehaviour
                 buff.info.use(sender, receiver);
             }
         }
-
-        Debug.Log(receiver.info.Hp);
     }
 
     protected int CalculateDmg(int attackDmg, int dice, int effVal, float effectiveness)

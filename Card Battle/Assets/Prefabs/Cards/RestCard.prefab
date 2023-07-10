@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 278911417288487576}
   - component: {fileID: 278911417288487579}
   - component: {fileID: 278911417288487573}
-  - component: {fileID: -5959113574219387501}
   - component: {fileID: -6084171924796324959}
+  - component: {fileID: -5819875069384080333}
   m_Layer: 0
   m_Name: RestCard
   m_TagString: Untagged
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2
-  type: 3
+  type: 0
   _name: Rest
   effVal: 1
   level: 1
@@ -133,7 +133,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 0}
---- !u!60 &-5959113574219387501
+--- !u!114 &-6084171924796324959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278911417288487577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ca9fe77e24abe49b820a8c77370a65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backOrders:
+  - {fileID: 278911417288487576}
+  frontOrders:
+  - {fileID: 3079076727159251344}
+  - {fileID: 919497538250345523}
+  - {fileID: 8029905649903499848}
+  sortingLayerName: Card
+--- !u!60 &-5819875069384080333
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,30 +177,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 1}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 0.9510565, y: 0.30901712}
---- !u!114 &-6084171924796324959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 278911417288487577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38ca9fe77e24abe49b820a8c77370a65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backOrders:
-  - {fileID: 278911417288487576}
-  frontOrders:
-  - {fileID: 3079076727159251344}
-  - {fileID: 919497538250345523}
-  - {fileID: 8029905649903499848}
-  sortingLayerName: Card
+    - - {x: -0.235, y: 0.305}
+      - {x: -0.235, y: -0.305}
+      - {x: 0.235, y: -0.305}
+      - {x: 0.235, y: 0.305}
 --- !u!1 &947335540368686100
 GameObject:
   m_ObjectHideFlags: 0

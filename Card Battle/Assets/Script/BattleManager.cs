@@ -31,6 +31,7 @@ public class BattleManager : MonoBehaviour
     private Character enemy;
 
     //플레이어, 적 카드 정보 체크
+    [SerializeField]  
     public Decision playerDecision;
     public EnemyDecision enemyDecision;
 
@@ -183,61 +184,26 @@ public class BattleManager : MonoBehaviour
 
         if (playerDice > enemyDice)
         {
-            //Defense
-            if (enemyDecision.card.info.Id == 1)
-            {
-                enemyDecision.card.info.use(enemy, player);
-            }
-
             playerDecision.card.info.use(player, enemy);
-
-            if (playerDecision.card.info.Id == 1)
-            {
-                enemyDecision.card.info.use(enemy, player);
-            }
         }
         else if (playerDice == enemyDice)
         {
-            //Defense
-            if (playerDecision.card.info.Id == 1)
-            {
-                playerDecision.card.info.use(player, enemy);
-                enemyDecision.card.info.use(enemy, player);
-            }
-            else if(enemyDecision.card.info.Id == 1)
-            {
-                enemyDecision.card.info.use(enemy, player);
-                playerDecision.card.info.use(player, enemy);
-            }
 
-            else
-            {
-                playerDice = 0;
-                enemyDice = 0;
-            }
+            playerDice = 0;
+            enemyDice = 0;
 
             StartCoroutine(CardSorting());
             return;
         }
         else
         {
-            if (playerDecision.card.info.Id == 1)
-            {
-                playerDecision.card.info.use(player, enemy);
-            }
-
             enemyDecision.card.info.use(enemy, player);
-
-            if (enemyDecision.card.info.Id == 1)
-            {
-                playerDecision.card.info.use(player, enemy);
-            }
         }
-
-        Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
 
         playerHpSlider.value = player.info.Hp;
         enemyHpSlider.value = enemy.info.Hp;
+
+        Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
 
         playerDice = 0;
         enemyDice = 0;

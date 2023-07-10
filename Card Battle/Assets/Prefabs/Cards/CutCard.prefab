@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 3
-  type: 0
+  type: 1
   _name: Cut
   effVal: 3
   level: 1
