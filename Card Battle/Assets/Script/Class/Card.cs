@@ -32,13 +32,16 @@ public class Card : MonoBehaviour
     [SerializeField]
     private SpriteRenderer cardimg;
     [SerializeField]
-    private TextMeshPro name;
+    private TextMeshPro _Name;
     [SerializeField]
     private TextMeshPro effect;
 
-    public bool myCard;
+    // 내 카드인지 아닌지 체크하는 변수
+    private bool myCard;
 
+    // 카드위치를 바꾸기 위한 변수
     public bool cardSelect;
+    // 카드 윈래 위치를 저장하는 클래스
     public PRS originPRS;
     public void Init()
     {
@@ -56,12 +59,12 @@ public class Card : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (myCard)
+        if (myCard && BattleManager.Bm.state != BattleManager.State.CardDecision)
             BattleManager.Bm.CardMouseOver(this);
     }
     private void OnMouseExit()
     {
-        if (myCard)
+        if (myCard && BattleManager.Bm.state != BattleManager.State.CardDecision)
             BattleManager.Bm.CardMouseExit(this);
     }
     private void OnMouseDown()
@@ -86,13 +89,13 @@ public class Card : MonoBehaviour
         if (myCard)
         {
             cardimg.sprite = img;
-            name.text = _name;
+            _Name.text = _name;
             effect.text = effVal.ToString();
         }
         else
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = backCard;
-            name.text = " ";
+            _Name.text = " ";
             effect.text = " ";
         }
     }
@@ -101,7 +104,7 @@ public class Card : MonoBehaviour
     {
         gameObject.GetComponent<SpriteRenderer>().sprite = frontCard;
         cardimg.sprite = img;
-        name.text = _name;
+        _Name.text = _name;
         effect.text = effVal.ToString();
     }
     public void MoveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
@@ -119,24 +122,6 @@ public class Card : MonoBehaviour
             transform.localScale = prs.scale;
         }
     }
-
-    /* public void MoveTransform(PRS prs, bool Lerp, int Speed = 10)
-     {
-         if (Lerp)
-         {
-             transform.position = Vector3.Lerp(transform.position, prs.pos, Speed * Time.deltaTime);
-             transform.rotation = Quaternion.Lerp(transform.rotation, prs.rot, Speed * Time.deltaTime);
-             transform.localScale = Vector3.Lerp(transform.localScale, prs.scale, Speed * Time.deltaTime);
-         }
-         if (!Lerp)
-         {
-             transform.position = prs.pos;
-             transform.rotation = prs.rot;
-             transform.localScale = prs.scale;
-         }
-     }*/
-
-
     public void Test()
     {
         Debug.Log($"id: {info.Id}\ntype:{info.Type}\nname: {info.Name}\n" +
