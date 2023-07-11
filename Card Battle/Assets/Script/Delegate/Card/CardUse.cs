@@ -14,9 +14,20 @@ public class CardUse : MonoBehaviour
         //버프 - 프로토타입 구현 X 연동만 해둠.
         if(card.info.buffs.Count > 0 )
         {
+            bool isExist = false;
             foreach(var buff in card.info.buffs)
             {
-                receiver.info.buffs.Add(buff);
+                foreach(var exist in receiver.info.buffs)
+                {
+                    if(exist.info.Id == buff.info.Id)
+                    {
+                        isExist = true;
+                        exist.info.CurrentTurn += buff.info.Turns;
+                        break;
+                    }
+                }
+                if (!isExist) 
+                    receiver.info.buffs.Add(buff);
             }
         }
     }

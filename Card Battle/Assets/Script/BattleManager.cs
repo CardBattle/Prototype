@@ -148,7 +148,7 @@ public class BattleManager : MonoBehaviour
     private void StateTurn()
     {
         playerDecision.cardPresence = false;
-
+        BuffCheck();
         StartCoroutine(WaitTimer());
     }
     /*public void DeckCheck()
