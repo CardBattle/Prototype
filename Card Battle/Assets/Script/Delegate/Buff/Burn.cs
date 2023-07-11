@@ -6,8 +6,6 @@ public class Burn : BuffUse
 {
     public override void Use(Character sender, Character receiver)
     {
-        base.Use(sender, receiver);
-
         receiver.info.Hp -= 1;
 
         Debug.Log("Burn");

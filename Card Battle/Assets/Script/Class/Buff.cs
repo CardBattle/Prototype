@@ -14,8 +14,7 @@ public class Buff : MonoBehaviour
     private string _name;
     [SerializeField]
     private int turns;
-    [SerializeField]
-    private BuffUse buffUse;
+    public BuffUse buffUse;
     
     public void Init()
     {

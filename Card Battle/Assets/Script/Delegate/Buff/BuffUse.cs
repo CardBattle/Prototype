@@ -15,6 +15,6 @@ public class BuffUse : MonoBehaviour
 
     public virtual void Use(Character sender, Character receiver)
     {
-        buff.info.CurrentTurn -= 1;
+
     }
 }
