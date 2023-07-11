@@ -16,7 +16,7 @@ public class CardUse : MonoBehaviour
         {
             foreach(var buff in card.info.buffs)
             {
-                buff.info.use(sender, receiver);
+                receiver.info.buffs.Add(buff);
             }
         }
     }

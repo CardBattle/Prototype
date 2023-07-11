@@ -23,4 +23,12 @@ public class Buff : MonoBehaviour
 
         buffUse.Init(this);
     }
+
+    public void BuffCheck(Character character)
+    {
+        if(info.CurrentTurn <= 0)
+        {
+            character.info.buffs.Remove(this);
+        }
+    }
 }
