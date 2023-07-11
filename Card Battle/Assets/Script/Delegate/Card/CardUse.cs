@@ -14,16 +14,27 @@ public class CardUse : MonoBehaviour
         //버프 - 프로토타입 구현 X 연동만 해둠.
         if(card.info.buffs.Count > 0 )
         {
+            bool isExist = false;
             foreach(var buff in card.info.buffs)
             {
-                buff.info.use(sender, receiver);
+                foreach(var exist in receiver.info.buffs)
+                {
+                    if(exist.info.Id == buff.info.Id)
+                    {
+                        isExist = true;
+                        exist.info.CurrentTurn += buff.info.Turns;
+                        break;
+                    }
+                }
+                if (!isExist) 
+                    receiver.info.buffs.Add(buff);
             }
         }
     }
 
     protected int CalculateDmg(int attackDmg, int dice, int effVal, float effectiveness)
     {
-        return (int)Mathf.Round((attackDmg + dice + effVal) * effectiveness);
+        return (int)((attackDmg + dice + effVal) * effectiveness);
     }
 
     /// <summary>
@@ -53,7 +64,7 @@ public class CardUse : MonoBehaviour
             if (type2 == WeaponType.SWORD) return 2f;
         }
 
-        return 0f;
+        return 1f;
     }
 
 }

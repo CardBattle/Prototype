@@ -148,7 +148,7 @@ public class BattleManager : MonoBehaviour
     private void StateTurn()
     {
         playerDecision.cardPresence = false;
-
+        BuffCheck();
         StartCoroutine(WaitTimer());
     }
     /*public void DeckCheck()
@@ -173,6 +173,22 @@ public class BattleManager : MonoBehaviour
     }
     private void DiceTurn()
     {
+        //존재하는 버프 사용
+        if(player.info.buffs.Count > 0)
+        {
+            foreach(var buff in player.info.buffs)
+            {
+                buff.buffUse.Use(player);
+            }
+        }
+        if(enemy.info.buffs.Count > 0)
+        {
+            foreach(var buff in enemy.info.buffs)
+            {
+                buff.buffUse.Use(enemy);
+            }
+        }
+
         if (playerDecision.card == null && playerDice == 0) { playerDice = 0; }
         if (enemyDecision.card == null && enemyDice == 0) { enemyDice = 0; }
 
@@ -365,6 +381,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         ++turnCount;
+
         timer = 10;
 
         if(enemyCards.Count != 0)
@@ -396,6 +413,31 @@ public class BattleManager : MonoBehaviour
         state = State.CardDecision;
         DiceTurn();
     }
+
+    void BuffCheck()
+    {
+        if (enemy.info.buffs.Count > 0)
+        {
+            for(int i = 0; i < enemy.info.buffs.Count; i++)
+            {
+                var buff = enemy.info.buffs[i];
+                Debug.Log($"enemy buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
+                buff.BuffCheck(enemy);
+                buff.info.CurrentTurn--;
+            }
+        }
+        if (player.info.buffs.Count > 0)
+        {
+            for (int i = 0; i < player.info.buffs.Count; i++)
+            {
+                var buff = player.info.buffs[i];
+                Debug.Log($"player buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
+                buff.BuffCheck(player);
+                buff.info.CurrentTurn--;
+            }
+        }
+    }
+
     IEnumerator StartGame(int start)
     {
         CardCombine(true);
