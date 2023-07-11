@@ -34,7 +34,7 @@ public class CardUse : MonoBehaviour
 
     protected int CalculateDmg(int attackDmg, int dice, int effVal, float effectiveness)
     {
-        return (int)Mathf.Round((attackDmg + dice + effVal) * effectiveness);
+        return (int)((attackDmg + dice + effVal) * effectiveness);
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public class CardUse : MonoBehaviour
             if (type2 == WeaponType.SWORD) return 2f;
         }
 
-        return 0f;
+        return 1f;
     }
 
 }
