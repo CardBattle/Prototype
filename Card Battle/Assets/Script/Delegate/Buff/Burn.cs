@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Burn : BuffUse
 {
-    public override void Use(Character sender, Character receiver)
+    public override void Use(Character character)
     {
-        receiver.info.Hp -= 1;
+        character.info.Hp -= 1;
 
         Debug.Log("Burn");
     }

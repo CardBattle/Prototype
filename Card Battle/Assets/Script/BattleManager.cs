@@ -178,14 +178,14 @@ public class BattleManager : MonoBehaviour
         {
             foreach(var buff in player.info.buffs)
             {
-                buff.buffUse.Use(player, enemy);
+                buff.buffUse.Use(player);
             }
         }
         if(enemy.info.buffs.Count > 0)
         {
             foreach(var buff in enemy.info.buffs)
             {
-                buff.buffUse.Use(enemy, player);
+                buff.buffUse.Use(enemy);
             }
         }
 
@@ -420,18 +420,18 @@ public class BattleManager : MonoBehaviour
         {
             foreach (var buff in enemy.info.buffs)
             {
-                buff.info.CurrentTurn--;
+                Debug.Log($"enemy buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
                 buff.BuffCheck(enemy);
-                Debug.Log($"enemy buff:{buff}, remain: {buff.info.CurrentTurn}");
+                buff.info.CurrentTurn--;
             }
         }
         if (player.info.buffs.Count > 0)
         {
             foreach (var buff in player.info.buffs)
             {
-                buff.info.CurrentTurn--;
+                Debug.Log($"player buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
                 buff.BuffCheck(player);
-                Debug.Log($"player buff:{buff}, remain: {buff.info.CurrentTurn}");
+                buff.info.CurrentTurn--;
             }
         }
     }
