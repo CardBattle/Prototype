@@ -418,8 +418,9 @@ public class BattleManager : MonoBehaviour
     {
         if (enemy.info.buffs.Count > 0)
         {
-            foreach (var buff in enemy.info.buffs)
+            for(int i = 0; i < enemy.info.buffs.Count; i++)
             {
+                var buff = enemy.info.buffs[i];
                 Debug.Log($"enemy buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
                 buff.BuffCheck(enemy);
                 buff.info.CurrentTurn--;
@@ -427,8 +428,9 @@ public class BattleManager : MonoBehaviour
         }
         if (player.info.buffs.Count > 0)
         {
-            foreach (var buff in player.info.buffs)
+            for (int i = 0; i < player.info.buffs.Count; i++)
             {
+                var buff = player.info.buffs[i];
                 Debug.Log($"player buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
                 buff.BuffCheck(player);
                 buff.info.CurrentTurn--;
