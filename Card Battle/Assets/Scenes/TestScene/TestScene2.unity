@@ -173,13 +173,11 @@ MonoBehaviour:
   enemyDecision: {fileID: 1448033893}
   playerDeck: []
   enemyDeck: []
-  playerCardList: []
-  enemyCardList: []
-  cardManager: {fileID: 8508805978501511359}
-  playerDeleteCard: []
-  enemyDeleteCard: []
   playerCards: []
   enemyCards: []
+  playerDeleteCards: []
+  enemyDeleteCards: []
+  cardManager: {fileID: 8508805978501511359}
   Selet: {fileID: 1858920106}
   originalPlace:
     pos: {x: 0, y: 0, z: 0}
@@ -1268,10 +1266,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Importedcard: {fileID: 0}
   card: {fileID: 0}
+  cardCheck: 0
+  cardPresence: 0
   enemyDecision: {fileID: 1448033893}
   button: {fileID: 434821453}
-  cardUse: {fileID: 0}
-  cardPresence: 0
 --- !u!50 &1232595992
 Rigidbody2D:
   serializedVersion: 4
@@ -1459,9 +1457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 0}
-  Importedcard: {fileID: 0}
-  button: {fileID: 0}
-  cardUse: {fileID: 0}
+  cardCheck: 0
 --- !u!1 &1486172366
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,15 +2227,16 @@ MonoBehaviour:
   attackDmg: 250
   weapon: 6
   img: {fileID: 21300000, guid: 9125c204f566db048a92ebcb64d9d14a, type: 3}
+  buffs: []
   cards:
   - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
   - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
   - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
   - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+  - {fileID: 3230438190971658476, guid: 98ae2b0c9831d9049a91b9fa113e6d83, type: 3}
+  - {fileID: 3230438190971658476, guid: 98ae2b0c9831d9049a91b9fa113e6d83, type: 3}
+  - {fileID: 278911417288487577, guid: d406de02084334c4bb728fa6f693cc76, type: 3}
+  - {fileID: 278911417288487577, guid: d406de02084334c4bb728fa6f693cc76, type: 3}
 --- !u!1 &220197811883665581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,19 +2360,16 @@ MonoBehaviour:
   attackDmg: 500
   weapon: 1
   img: {fileID: 21300000, guid: d6a44ab95b0def041a7929981a2c23a1, type: 3}
+  buffs: []
   cards:
   - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
   - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
+  - {fileID: 3230438190971658476, guid: 98ae2b0c9831d9049a91b9fa113e6d83, type: 3}
+  - {fileID: 3230438190971658476, guid: 98ae2b0c9831d9049a91b9fa113e6d83, type: 3}
+  - {fileID: 278911417288487577, guid: d406de02084334c4bb728fa6f693cc76, type: 3}
+  - {fileID: 278911417288487577, guid: d406de02084334c4bb728fa6f693cc76, type: 3}
   - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
   - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
-  - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
-  - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
-  - {fileID: 7437580933446921501, guid: 73430fec2a9f483419e92a3b45b5ddf0, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
-  - {fileID: 1234368001717940415, guid: f751c750d92869945a5e628b76305f9c, type: 3}
 --- !u!114 &3223454997996177616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2468,5 +2462,3 @@ MonoBehaviour:
   enemy: {fileID: 220197811883665581}
   playerCardObjs: []
   enemyCardObjs: []
-  playerSelectedCards: []
-  enemySelectedCards: []

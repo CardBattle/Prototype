@@ -21,7 +21,7 @@ public class BattleManager : MonoBehaviour
         CardDecision,
 
         //카드 정리
-        DestroyCard,     
+        DestroyCard,
     }
 
     //플레이어, 적 정보와 덱 체크
@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour
     private Character enemy;
 
     //플레이어, 적 카드 정보 체크
-    [SerializeField]  
+    [SerializeField]
     public Decision playerDecision;
     public EnemyDecision enemyDecision;
 
@@ -70,7 +70,7 @@ public class BattleManager : MonoBehaviour
 
     //Add메서드 하기 편하게 넣어본 이벤트
     private static Action<bool> OnAddCard;
-    
+
     //Decision 클래스에서 넘겨받은 카드 정보를 저장하는 클래스
     private Card selectCard;
 
@@ -79,7 +79,7 @@ public class BattleManager : MonoBehaviour
     //카드 이미지들 순서
     private int order = 0;
     private int enemyOrder = 0;
-   
+
     // 전에 쓴 카드들 이미지들 순서
     private int sortingCard = 0;
     private int enemySortingCard = 0;
@@ -93,7 +93,7 @@ public class BattleManager : MonoBehaviour
 
     // 타이머
     public float timer;
-    
+
     // 플레이어 동작
     public State state;
     [SerializeField]
@@ -101,7 +101,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private Slider enemyHpSlider; // 적 hp 슬라이더
     [SerializeField]
-    private  TextMeshPro timerText; //타이머 텍스트
+    private TextMeshPro timerText; //타이머 텍스트
 
     private void Awake()
     {
@@ -110,17 +110,17 @@ public class BattleManager : MonoBehaviour
             Bm = this;
         }
 
-        player.Init();  
+        player.Init();
         enemy.Init();
-          
-        playerHpSlider.maxValue = player.info.MaxHp;    
+
+        playerHpSlider.maxValue = player.info.MaxHp;
         enemyHpSlider.maxValue = enemy.info.MaxHp;
 
         playerHpSlider.value = player.info.Hp;
         enemyHpSlider.value = enemy.info.Hp;
 
- 
-        cardManager.Init();       
+
+        cardManager.Init();
         OnAddCard = Add;
 
         state = State.CardDecision;
@@ -129,8 +129,8 @@ public class BattleManager : MonoBehaviour
 
     }
     private void Start()
-    {     
-        StartCoroutine(StartGame(5));        
+    {
+        StartCoroutine(StartGame(5));
         StateTurn();
     }
     private void Update()
@@ -148,7 +148,7 @@ public class BattleManager : MonoBehaviour
     private void StateTurn()
     {
         playerDecision.cardPresence = false;
-
+        BuffCheck();
         StartCoroutine(WaitTimer());
     }
     /*public void DeckCheck()
@@ -169,18 +169,55 @@ public class BattleManager : MonoBehaviour
         if (enemyCards.Count != 0)
         {
             enemyCards[0]?.MoveTransform(enemyCards[0].originPRS, true, 0.7f);
-        }    
+        }
     }
     private void DiceTurn()
     {
+        //존재하는 버프 사용
+        if (player.info.buffs.Count > 0)
+        {
+            foreach (var buff in player.info.buffs)
+            {
+                buff.buffUse.Use(player);
+            }
+        }
+        if (enemy.info.buffs.Count > 0)
+        {
+            foreach (var buff in enemy.info.buffs)
+            {
+                buff.buffUse.Use(enemy);
+            }
+        }
+
         if (playerDecision.card == null && playerDice == 0) { playerDice = 0; }
         if (enemyDecision.card == null && enemyDice == 0) { enemyDice = 0; }
 
-        print($"아군 다이스{playerDice}");
-        print($"적군 다이스{enemyDice}");
-
-        if (enemyDecision.card != null)     
+        if (enemyDecision.card != null)
             enemyDecision.card.EnemyCardFront();
+
+        if (playerDecision.card != null && playerDecision.card.info.Property == PropertyType.DEFENSE)
+        {
+            DefenceCard(true);
+            return;
+        }
+        else if (enemyDecision.card != null && enemyDecision.card.info.Property == PropertyType.DEFENSE)
+        {
+            DefenceCard(false);
+            return;
+        }
+
+        if (playerDecision.card != null && playerDecision.card.info.Property == PropertyType.HEEL)
+        {
+            HeelCard(true);
+            return;
+        }
+        else if (enemyDecision.card != null && enemyDecision.card.info.Property == PropertyType.HEEL)
+        {
+            HeelCard(false);
+            return;
+        }
+
+        print("적이랑 아군이 힐 디펜스 안씀");
 
         if (playerDice > enemyDice)
         {
@@ -208,28 +245,222 @@ public class BattleManager : MonoBehaviour
         playerDice = 0;
         enemyDice = 0;
 
-        StartCoroutine(CardSorting());       
+        StartCoroutine(CardSorting());
     }
-    public void DiceResultTurn()
+
+    private void DefenceCard(bool myCard)
     {
-        //주사위 높은사람이 카드 효과 발동
-        //다시 StateTurn()으로 돌아감
+        if (myCard)
+        {
+            if (enemyDecision.card != null && enemyDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (enemyDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    playerDecision.card.info.use(player, enemy);
+                    print("플레이어 방어");
+                    enemyDecision.card.info.use(enemy, player);
+                    print("적 공격");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (enemyDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    enemyDecision.card.info.use(enemy, player);
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    print("적 힐");
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            playerDice = 0;
+            enemyDice = 0;
+
+            print("아무 일도 안일어남");
+
+            StartCoroutine(CardSorting());
+        }
+        else if (!myCard)
+        {
+            if (playerDecision.card != null && playerDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (playerDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    enemyDecision.card.info.use(player, enemy);
+                    print("적 방어");
+                    playerDecision.card.info.use(enemy, player);
+                    print("아군 공격");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (playerDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    playerDecision.card.info.use(enemy, player);
+                    print("플레이어 힐");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            playerDice = 0;
+            enemyDice = 0;
+
+            print("아무 일도 안일어남");
+
+            StartCoroutine(CardSorting());
+        }
     }
-      
-    //여기는 다른 분기점
-    /*public void DeckPull()
+
+    private void HeelCard(bool myCard)
     {
-        //카드 없을때 채워주는 메서드
-        //여기서 카드 선택 메서드까지 기다렸다가 같이 DiceTurn() 으로 이동
-    }*/
-    
+        if (myCard)
+        {
+            if (enemyDecision.card != null && enemyDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (enemyDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    playerDecision.card.info.use(player, enemy);
+                    print("플레이어 회복");
+                    enemyDecision.card.info.use(enemy, player);
+                    print("적 공격");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (enemyDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    playerDecision.card.info.use(player, enemy);
+                    print("플레이어 회복");
+
+                    enemyDecision.card.info.use(enemy, player);
+
+                    print("적 회복");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            playerDecision.card.info.use(player, enemy);
+            print("플레이어 회복");
+            playerDice = 0;
+            enemyDice = 0;
+
+            StartCoroutine(CardSorting());
+        }
+        else if (!myCard)
+        {
+            if (playerDecision.card != null && playerDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (playerDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    enemyDecision.card.info.use(player, enemy);
+                    print("적 회복");
+                    playerDecision.card.info.use(enemy, player);
+                    print("아군 공격");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (playerDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    enemyDecision.card.info.use(enemy, player);
+                    print("적 회복");
+                    playerDecision.card.info.use(enemy, player);
+                    print("아군 회복");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse 결과: 플레이어Hp:{player.info.Hp}\n에너미Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            enemyDecision.card.info.use(enemy, player);
+            print("적군 회복");
+
+            playerDice = 0;
+            enemyDice = 0;
+
+            StartCoroutine(CardSorting());
+        }
+    }
+
+
+
     private void BattleResult(int result)
     {
         if (result == 0) { timerText.text = "패배"; }
         if (result == 1) { timerText.text = "승리"; }
         if (result == 2) { timerText.text = "무승부"; }
 
-        StopAllCoroutines();     
+        StopAllCoroutines();
     }
 
     void CardCombine(bool myCard)
@@ -288,7 +519,7 @@ public class BattleManager : MonoBehaviour
             card.originPRS = new PRS(new Vector2(-1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
             card.MoveTransform(card.originPRS, false);
 
-            card.cardSelect = true;        
+            card.cardSelect = true;
         }
 
     }
@@ -311,9 +542,9 @@ public class BattleManager : MonoBehaviour
     }
 
     IEnumerator WaitTimer()
-    {      
+    {
         yield return new WaitForSeconds(0.5f);
-     
+
         if (playerCards.Count == 0)
         {
             StartCoroutine(DrawFullCard(true));
@@ -321,7 +552,7 @@ public class BattleManager : MonoBehaviour
 
         if (enemyCards.Count == 0)
         {
-            StartCoroutine(DrawFullCard(false));       
+            StartCoroutine(DrawFullCard(false));
         }
 
         if (turnCount >= 2 && playerDecision.cardCheck && playerDeleteCards.Count >= 2)
@@ -341,7 +572,7 @@ public class BattleManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2);
-    
+
         if (player.info.Hp == 0 && enemy.info.Hp != 0)
         {
             BattleResult(0);
@@ -354,7 +585,7 @@ public class BattleManager : MonoBehaviour
         {
             BattleResult(2);
         }
-      
+
         OnAddCard?.Invoke(true);
         OnAddCard?.Invoke(false);
 
@@ -365,13 +596,14 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         ++turnCount;
+
         timer = 10;
 
-        if(enemyCards.Count != 0)
+        if (enemyCards.Count != 0)
         {
             enemyCards[0].originPRS = new PRS(new Vector2(1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
-        }   
-        
+        }
+
         CardSelectionTurn();
     }
     IEnumerator Timer()
@@ -386,16 +618,41 @@ public class BattleManager : MonoBehaviour
         if (timer <= 0)
         {
             timerText.text = "0.00";
-           
+
             if (playerDecision.cardPresence == false && playerDecision.Importedcard != null)
             {
                 playerDecision.DecisionButtom();
             }
         }
-  
+
         state = State.CardDecision;
         DiceTurn();
     }
+
+    void BuffCheck()
+    {
+        if (enemy.info.buffs.Count > 0)
+        {
+            for (int i = 0; i < enemy.info.buffs.Count; i++)
+            {
+                var buff = enemy.info.buffs[i];
+                Debug.Log($"enemy buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
+                buff.BuffCheck(enemy);
+                buff.info.CurrentTurn--;
+            }
+        }
+        if (player.info.buffs.Count > 0)
+        {
+            for (int i = 0; i < player.info.buffs.Count; i++)
+            {
+                var buff = player.info.buffs[i];
+                Debug.Log($"player buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
+                buff.BuffCheck(player);
+                buff.info.CurrentTurn--;
+            }
+        }
+    }
+
     IEnumerator StartGame(int start)
     {
         CardCombine(true);
@@ -411,9 +668,9 @@ public class BattleManager : MonoBehaviour
     }
 
     IEnumerator DrawFullCard(bool myCard)
-    {  
+    {
         for (int i = 0; i < 5; i++)
-        {                  
+        {
             OnAddCard?.Invoke(myCard);
             yield return new WaitForSeconds(0.1f);
         }
@@ -430,7 +687,7 @@ public class BattleManager : MonoBehaviour
             CardCombine(false);
         }
 
-        if (playerDecision.card != null)        
+        if (playerDecision.card != null)
             playerDecision.card.originPRS = new PRS(new Vector2(-4.3f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
         if (enemyDecision.card != null)
             enemyDecision.card.originPRS = new PRS(new Vector2(4.3f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
@@ -444,15 +701,15 @@ public class BattleManager : MonoBehaviour
 
         if (playerDecision.card != null)
             playerDecision.card.MoveTransform(playerDecision.card.originPRS, true, 0.7f);
-        if(enemyDecision.card != null)     
+        if (enemyDecision.card != null)
             enemyDecision.card.MoveTransform(enemyDecision.card.originPRS, true, 0.7f);
-        
-        yield return new WaitForSeconds(0.1f);     
+
+        yield return new WaitForSeconds(0.1f);
 
         playerDecision.card = null;
         enemyDecision.card = null;
 
-        
+
         StateTurn();
     }
 
@@ -503,9 +760,9 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < targetCards.Count; i++)
         {
             var targetCard = targetCards[i];
-            targetCard.originPRS = originCardPRSs[i];          
-            targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);          
-        }      
+            targetCard.originPRS = originCardPRSs[i];
+            targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
+        }
     }
 
     List<PRS> RoundAlignment(Transform upTR, Transform downTR, int objcount, float height, Vector3 scale)

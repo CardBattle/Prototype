@@ -5,6 +5,7 @@ public enum PropertyType
 {
     ATTACK,
     DEFENSE,
+    HEEL,
 }
 
 public class DefaultCard

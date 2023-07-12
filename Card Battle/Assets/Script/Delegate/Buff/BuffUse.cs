@@ -6,12 +6,14 @@ using UnityEngine;
 
 public class BuffUse : MonoBehaviour
 {
+    Buff buff;
     public void Init(Buff buff)
     {
-        buff.info.use = Use;
+        this.buff = buff;
+        this.buff.info.use = Use;
     }
 
-    public virtual void Use(Character sender, Character receiver)
+    public virtual void Use(Character character)
     {
 
     }

@@ -11,16 +11,16 @@ public class DefaultBuff
     BuffType type;
     public BuffType Type { get => type; }
 
-    string name; 
+    string name;
     public string Name { get => name; }
 
     int turns;
     public int Turns { get => turns; set => turns = value; }
 
-    int currentTurn; 
+    int currentTurn;
     public int CurrentTurn { get => currentTurn; set => currentTurn = value; }
 
-    public delegate void Use(Character sender, Character receiver); //버프 적용 함수
+    public delegate void Use(Character character); //버프 적용 함수
     public Use use;
     public DefaultBuff(int id, BuffType type, string name, int turns)
     {

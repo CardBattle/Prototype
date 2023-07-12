@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bleed : BuffUse
 {
 
-    public override void Use(Character sender, Character receiver)
+    public override void Use(Character character)
     {
         Debug.Log("Bleed");
     }

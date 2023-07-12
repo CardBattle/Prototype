@@ -14,13 +14,20 @@ public class Buff : MonoBehaviour
     private string _name;
     [SerializeField]
     private int turns;
-    [SerializeField]
-    private BuffUse buffUse;
-    
+    public BuffUse buffUse;
+
     public void Init()
     {
         info = new(id, type, _name, turns);
 
         buffUse.Init(this);
+    }
+
+    public void BuffCheck(Character character)
+    {
+        if (info.CurrentTurn <= 0)
+        {
+            character.info.buffs.Remove(this);
+        }
     }
 }
