@@ -11,31 +11,31 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Bm;
     public enum State
     {
-        //´ë±â »óÅÂ
+        //ëŒ€ê¸° ìƒíƒœ
         WaitState,
 
-        //Ä«µå¸¦ ³Â´ÂÁö ¾È³Â´ÂÁö Ã¼Å©
+        //ì¹´ë“œë¥¼ ëƒˆëŠ”ì§€ ì•ˆëƒˆëŠ”ì§€ ì²´í¬
         SelectCard,
 
-        //Ä«µå °áÁ¤ÈÄ
+        //ì¹´ë“œ ê²°ì •í›„
         CardDecision,
 
-        //Ä«µå Á¤¸®
+        //ì¹´ë“œ ì •ë¦¬
         DestroyCard,
     }
 
-    //ÇÃ·¹ÀÌ¾î, Àû Á¤º¸¿Í µ¦ Ã¼Å©
+    //í”Œë ˆì´ì–´, ì  ì •ë³´ì™€ ë± ì²´í¬
     [SerializeField]
     private Character player;
     [SerializeField]
     private Character enemy;
 
-    //ÇÃ·¹ÀÌ¾î, Àû Ä«µå Á¤º¸ Ã¼Å©
+    //í”Œë ˆì´ì–´, ì  ì¹´ë“œ ì •ë³´ ì²´í¬
     [SerializeField]
     public Decision playerDecision;
     public EnemyDecision enemyDecision;
 
-    //ÇÃ·¹ÀÌ¾î, Àû µ¦ÀÌ¶û µå·Î¿ì ¸®½ºÆ®
+    //í”Œë ˆì´ì–´, ì  ë±ì´ë‘ ë“œë¡œìš° ë¦¬ìŠ¤íŠ¸
     [SerializeField]
     private List<GameObject> playerDeck;
     [SerializeField]
@@ -43,24 +43,24 @@ public class BattleManager : MonoBehaviour
     public List<Card> playerCards;
     public List<Card> enemyCards;
 
-    // Àü¿¡ ¾´ Ä«µåµé »èÁ¦ÇÏ±â À§ÇÑ ¸®½ºÆ®
+    // ì „ì— ì“´ ì¹´ë“œë“¤ ì‚­ì œí•˜ê¸° ìœ„í•œ ë¦¬ìŠ¤íŠ¸
     public List<Card> playerDeleteCards;
     public List<Card> enemyDeleteCards;
 
-    //Ä«µå¸Å´ÏÀú
+    //ì¹´ë“œë§¤ë‹ˆì €
     [SerializeField]
     private CardManager cardManager;
 
 
-    //Ä«µå ¸Å´ÏÀú
+    //ì¹´ë“œ ë§¤ë‹ˆì €
 
     [SerializeField]
     private TextMeshPro Selet;
-    //¿ø·¡ ÀÖ¾ú´ø ³» Ä«µå À§Ä¡
+    //ì›ë˜ ìˆì—ˆë˜ ë‚´ ì¹´ë“œ ìœ„ì¹˜
     [SerializeField]
     private PRS originalPlace;
 
-    //µå·Î¿ì Ä«µå À§Ä¡ ¿ÀºêÁ§Æ®
+    //ë“œë¡œìš° ì¹´ë“œ ìœ„ì¹˜ ì˜¤ë¸Œì íŠ¸
     [SerializeField] Transform myDeckPosition;
     [SerializeField] Transform enemyDeckPosition;
     [SerializeField] Transform myCardUp;
@@ -68,40 +68,40 @@ public class BattleManager : MonoBehaviour
     [SerializeField] Transform enemyCardUp;
     [SerializeField] Transform enemyCardDown;
 
-    //Add¸Ş¼­µå ÇÏ±â ÆíÇÏ°Ô ³Ö¾îº» ÀÌº¥Æ®
+    //Addë©”ì„œë“œ í•˜ê¸° í¸í•˜ê²Œ ë„£ì–´ë³¸ ì´ë²¤íŠ¸
     private static Action<bool> OnAddCard;
 
-    //Decision Å¬·¡½º¿¡¼­ ³Ñ°Ü¹ŞÀº Ä«µå Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+    //Decision í´ë˜ìŠ¤ì—ì„œ ë„˜ê²¨ë°›ì€ ì¹´ë“œ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
     private Card selectCard;
 
 
 
-    //Ä«µå ÀÌ¹ÌÁöµé ¼ø¼­
+    //ì¹´ë“œ ì´ë¯¸ì§€ë“¤ ìˆœì„œ
     private int order = 0;
     private int enemyOrder = 0;
 
-    // Àü¿¡ ¾´ Ä«µåµé ÀÌ¹ÌÁöµé ¼ø¼­
+    // ì „ì— ì“´ ì¹´ë“œë“¤ ì´ë¯¸ì§€ë“¤ ìˆœì„œ
     private int sortingCard = 0;
     private int enemySortingCard = 0;
 
-    // ÀüÀü¿¡ ¾´ Ä«µå ¿ÀºêÁ§Æ® »èÁ¦ÇÏ±â À§ÇÑ º¯¼ö
+    // ì „ì „ì— ì“´ ì¹´ë“œ ì˜¤ë¸Œì íŠ¸ ì‚­ì œí•˜ê¸° ìœ„í•œ ë³€ìˆ˜
     private int turnCount = 0;
 
-    // ´ÙÀÌ½º Ã¼Å©
+    // ë‹¤ì´ìŠ¤ ì²´í¬
     public int playerDice = 0;
     public int enemyDice = 0;
 
-    // Å¸ÀÌ¸Ó
+    // íƒ€ì´ë¨¸
     public float timer;
 
-    // ÇÃ·¹ÀÌ¾î µ¿ÀÛ
+    // í”Œë ˆì´ì–´ ë™ì‘
     public State state;
     [SerializeField]
-    private Slider playerHpSlider; // ÇÃ·¹ÀÌ¾î hp ½½¶óÀÌ´õ
+    private Slider playerHpSlider; // í”Œë ˆì´ì–´ hp ìŠ¬ë¼ì´ë”
     [SerializeField]
-    private Slider enemyHpSlider; // Àû hp ½½¶óÀÌ´õ
+    private Slider enemyHpSlider; // ì  hp ìŠ¬ë¼ì´ë”
     [SerializeField]
-    private TextMeshPro timerText; //Å¸ÀÌ¸Ó ÅØ½ºÆ®
+    private TextMeshPro timerText; //íƒ€ì´ë¨¸ í…ìŠ¤íŠ¸
 
     private void Awake()
     {
@@ -153,13 +153,13 @@ public class BattleManager : MonoBehaviour
     }
     /*public void DeckCheck()
     {
-        //ÇÃ·¹ÀÌ¾î³ª Àû µ¦¿¡ Ä«µå°¡ ÀÖ´ÂÁö Ã¼Å©
-        //¾øÀ¸¸é DeckPull()·Î ÀÌµ¿
+        //í”Œë ˆì´ì–´ë‚˜ ì  ë±ì— ì¹´ë“œê°€ ìˆëŠ”ì§€ ì²´í¬
+        //ì—†ìœ¼ë©´ DeckPull()ë¡œ ì´ë™
     }
     public void CardDraw()
     {
-        //Ä«µå µå·Î¿ì ÅÏ
-        //µå·Î¿ì ÇÒ Ä«µå ¾øÀ¸¸é ´ë±â
+        //ì¹´ë“œ ë“œë¡œìš° í„´
+        //ë“œë¡œìš° í•  ì¹´ë“œ ì—†ìœ¼ë©´ ëŒ€ê¸°
     }*/
     private void CardSelectionTurn()
     {
@@ -173,7 +173,7 @@ public class BattleManager : MonoBehaviour
     }
     private void DiceTurn()
     {
-        //Á¸ÀçÇÏ´Â ¹öÇÁ »ç¿ë
+        //ì¡´ì¬í•˜ëŠ” ë²„í”„ ì‚¬ìš©
         if (player.info.buffs.Count > 0)
         {
             foreach (var buff in player.info.buffs)
@@ -217,7 +217,7 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        print("ÀûÀÌ¶û ¾Æ±ºÀÌ Èú µğÆæ½º ¾È¾¸");
+        print("ì ì´ë‘ ì•„êµ°ì´ í ë””íœìŠ¤ ì•ˆì”€");
 
         if (playerDice > enemyDice)
         {
@@ -240,7 +240,7 @@ public class BattleManager : MonoBehaviour
         playerHpSlider.value = player.info.Hp;
         enemyHpSlider.value = enemy.info.Hp;
 
-        Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+        Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
         playerDice = 0;
         enemyDice = 0;
@@ -257,14 +257,14 @@ public class BattleManager : MonoBehaviour
                 if (enemyDecision.card.info.Property == PropertyType.ATTACK)
                 {
                     playerDecision.card.info.use(player, enemy);
-                    print("ÇÃ·¹ÀÌ¾î ¹æ¾î");
+                    print("í”Œë ˆì´ì–´ ë°©ì–´");
                     enemyDecision.card.info.use(enemy, player);
-                    print("Àû °ø°İ");
+                    print("ì  ê³µê²©");
 
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
@@ -279,12 +279,12 @@ public class BattleManager : MonoBehaviour
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
 
-                    print("Àû Èú");
+                    print("ì  í");
 
                     StartCoroutine(CardSorting());
                     return;
@@ -294,7 +294,7 @@ public class BattleManager : MonoBehaviour
             playerDice = 0;
             enemyDice = 0;
 
-            print("¾Æ¹« ÀÏµµ ¾ÈÀÏ¾î³²");
+            print("ì•„ë¬´ ì¼ë„ ì•ˆì¼ì–´ë‚¨");
 
             StartCoroutine(CardSorting());
         }
@@ -305,14 +305,14 @@ public class BattleManager : MonoBehaviour
                 if (playerDecision.card.info.Property == PropertyType.ATTACK)
                 {
                     enemyDecision.card.info.use(player, enemy);
-                    print("Àû ¹æ¾î");
+                    print("ì  ë°©ì–´");
                     playerDecision.card.info.use(enemy, player);
-                    print("¾Æ±º °ø°İ");
+                    print("ì•„êµ° ê³µê²©");
 
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
@@ -323,12 +323,12 @@ public class BattleManager : MonoBehaviour
                 else if (playerDecision.card.info.Property == PropertyType.HEEL)
                 {
                     playerDecision.card.info.use(enemy, player);
-                    print("ÇÃ·¹ÀÌ¾î Èú");
+                    print("í”Œë ˆì´ì–´ í");
 
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
@@ -341,7 +341,7 @@ public class BattleManager : MonoBehaviour
             playerDice = 0;
             enemyDice = 0;
 
-            print("¾Æ¹« ÀÏµµ ¾ÈÀÏ¾î³²");
+            print("ì•„ë¬´ ì¼ë„ ì•ˆì¼ì–´ë‚¨");
 
             StartCoroutine(CardSorting());
         }
@@ -356,14 +356,14 @@ public class BattleManager : MonoBehaviour
                 if (enemyDecision.card.info.Property == PropertyType.ATTACK)
                 {
                     playerDecision.card.info.use(player, enemy);
-                    print("ÇÃ·¹ÀÌ¾î È¸º¹");
+                    print("í”Œë ˆì´ì–´ íšŒë³µ");
                     enemyDecision.card.info.use(enemy, player);
-                    print("Àû °ø°İ");
+                    print("ì  ê³µê²©");
 
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
@@ -374,16 +374,16 @@ public class BattleManager : MonoBehaviour
                 else if (enemyDecision.card.info.Property == PropertyType.HEEL)
                 {
                     playerDecision.card.info.use(player, enemy);
-                    print("ÇÃ·¹ÀÌ¾î È¸º¹");
+                    print("í”Œë ˆì´ì–´ íšŒë³µ");
 
                     enemyDecision.card.info.use(enemy, player);
 
-                    print("Àû È¸º¹");
+                    print("ì  íšŒë³µ");
 
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
@@ -394,7 +394,7 @@ public class BattleManager : MonoBehaviour
             }
 
             playerDecision.card.info.use(player, enemy);
-            print("ÇÃ·¹ÀÌ¾î È¸º¹");
+            print("í”Œë ˆì´ì–´ íšŒë³µ");
             playerDice = 0;
             enemyDice = 0;
 
@@ -407,14 +407,14 @@ public class BattleManager : MonoBehaviour
                 if (playerDecision.card.info.Property == PropertyType.ATTACK)
                 {
                     enemyDecision.card.info.use(player, enemy);
-                    print("Àû È¸º¹");
+                    print("ì  íšŒë³µ");
                     playerDecision.card.info.use(enemy, player);
-                    print("¾Æ±º °ø°İ");
+                    print("ì•„êµ° ê³µê²©");
 
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
@@ -425,14 +425,14 @@ public class BattleManager : MonoBehaviour
                 else if (playerDecision.card.info.Property == PropertyType.HEEL)
                 {
                     enemyDecision.card.info.use(enemy, player);
-                    print("Àû È¸º¹");
+                    print("ì  íšŒë³µ");
                     playerDecision.card.info.use(enemy, player);
-                    print("¾Æ±º È¸º¹");
+                    print("ì•„êµ° íšŒë³µ");
 
                     playerHpSlider.value = player.info.Hp;
                     enemyHpSlider.value = enemy.info.Hp;
 
-                    Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
                     playerDice = 0;
                     enemyDice = 0;
@@ -443,7 +443,7 @@ public class BattleManager : MonoBehaviour
             }
 
             enemyDecision.card.info.use(enemy, player);
-            print("Àû±º È¸º¹");
+            print("ì êµ° íšŒë³µ");
 
             playerDice = 0;
             enemyDice = 0;
@@ -456,9 +456,9 @@ public class BattleManager : MonoBehaviour
 
     private void BattleResult(int result)
     {
-        if (result == 0) { timerText.text = "ÆĞ¹è"; }
-        if (result == 1) { timerText.text = "½Â¸®"; }
-        if (result == 2) { timerText.text = "¹«½ÂºÎ"; }
+        if (result == 0) { timerText.text = "íŒ¨ë°°"; }
+        if (result == 1) { timerText.text = "ìŠ¹ë¦¬"; }
+        if (result == 2) { timerText.text = "ë¬´ìŠ¹ë¶€"; }
 
         StopAllCoroutines();
     }
@@ -633,6 +633,7 @@ public class BattleManager : MonoBehaviour
     {
         if (enemy.info.buffs.Count > 0)
         {
+
             for (int i = 0; i < enemy.info.buffs.Count; i++)
             {
                 var buff = enemy.info.buffs[i];

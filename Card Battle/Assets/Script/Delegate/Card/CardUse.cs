@@ -11,7 +11,7 @@ public class CardUse : MonoBehaviour
 
     public virtual void Use(Character sender, Character receiver)
     {
-        //¹öÇÁ - ÇÁ·ÎÅäÅ¸ÀÔ ±¸Çö X ¿¬µ¿¸¸ ÇØµÒ.
+        //ë²„í”„ - í”„ë¡œí† íƒ€ì… êµ¬í˜„ X ì—°ë™ë§Œ í•´ë‘ .
         if (card.info.buffs.Count > 0)
         {
             bool isExist = false;
@@ -38,11 +38,11 @@ public class CardUse : MonoBehaviour
     }
 
     /// <summary>
-    /// type1¿¡´Â »ç¿ëµÇ´Â Ä«µåÀÇ Å¸ÀÔÀ», type2¿¡´Â °ø°İ¹Ş´Â Ä³¸¯ÅÍÀÇ ¹«±â Å¸ÀÔÀ» ³Ö´Â´Ù.
+    /// type1ì—ëŠ” ì‚¬ìš©ë˜ëŠ” ì¹´ë“œì˜ íƒ€ì…ì„, type2ì—ëŠ” ê³µê²©ë°›ëŠ” ìºë¦­í„°ì˜ ë¬´ê¸° íƒ€ì…ì„ ë„£ëŠ”ë‹¤.
     /// </summary>
-    /// <param name="type1">»ç¿ëÇÑ Ä«µåÀÇ Å¸ÀÔ</param>
-    /// <param name="type2">°ø°İ¹Ş´Â Ä³¸¯ÅÍÀÇ Å¸ÀÔ</param>
-    /// <returns>»ó¼ºÀÌ °è»êµÈ float°ª ¸®ÅÏ</returns>
+    /// <param name="type1">ì‚¬ìš©í•œ ì¹´ë“œì˜ íƒ€ì…</param>
+    /// <param name="type2">ê³µê²©ë°›ëŠ” ìºë¦­í„°ì˜ íƒ€ì…</param>
+    /// <returns>ìƒì„±ì´ ê³„ì‚°ëœ floatê°’ ë¦¬í„´</returns>
     protected float CalculateEffect(WeaponType type1, WeaponType type2)
     {
         if (type2 == WeaponType.BOSS) return 0.5f;

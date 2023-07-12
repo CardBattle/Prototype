@@ -22,6 +22,8 @@ public class Character : MonoBehaviour
     private WeaponType weapon;
     [SerializeField]
     private Sprite img;
+    
+    public List<Buff> buffs;
 
     public List<Buff> buffs;
 
