@@ -11,31 +11,31 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Bm;
     public enum State
     {
-        //´ë±â »óÅÂ
+        //ëŒ€ê¸° ìƒíƒœ
         WaitState,
 
-        //Ä«µå¸¦ ³Â´ÂÁö ¾È³Â´ÂÁö Ã¼Å©
+        //ì¹´ë“œë¥¼ ëƒˆëŠ”ì§€ ì•ˆëƒˆëŠ”ì§€ ì²´í¬
         SelectCard,
 
-        //Ä«µå °áÁ¤ÈÄ
+        //ì¹´ë“œ ê²°ì •í›„
         CardDecision,
 
-        //Ä«µå Á¤¸®
-        DestroyCard,     
+        //ì¹´ë“œ ì •ë¦¬
+        DestroyCard,
     }
 
-    //ÇÃ·¹ÀÌ¾î, Àû Á¤º¸¿Í µ¦ Ã¼Å©
+    //í”Œë ˆì´ì–´, ì  ì •ë³´ì™€ ë± ì²´í¬
     [SerializeField]
     private Character player;
     [SerializeField]
     private Character enemy;
 
-    //ÇÃ·¹ÀÌ¾î, Àû Ä«µå Á¤º¸ Ã¼Å©
-    [SerializeField]  
+    //í”Œë ˆì´ì–´, ì  ì¹´ë“œ ì •ë³´ ì²´í¬
+    [SerializeField]
     public Decision playerDecision;
     public EnemyDecision enemyDecision;
 
-    //ÇÃ·¹ÀÌ¾î, Àû µ¦ÀÌ¶û µå·Î¿ì ¸®½ºÆ®
+    //í”Œë ˆì´ì–´, ì  ë±ì´ë‘ ë“œë¡œìš° ë¦¬ìŠ¤íŠ¸
     [SerializeField]
     private List<GameObject> playerDeck;
     [SerializeField]
@@ -43,24 +43,24 @@ public class BattleManager : MonoBehaviour
     public List<Card> playerCards;
     public List<Card> enemyCards;
 
-    // Àü¿¡ ¾´ Ä«µåµé »èÁ¦ÇÏ±â À§ÇÑ ¸®½ºÆ®
+    // ì „ì— ì“´ ì¹´ë“œë“¤ ì‚­ì œí•˜ê¸° ìœ„í•œ ë¦¬ìŠ¤íŠ¸
     public List<Card> playerDeleteCards;
     public List<Card> enemyDeleteCards;
 
-    //Ä«µå¸Å´ÏÀú
+    //ì¹´ë“œë§¤ë‹ˆì €
     [SerializeField]
     private CardManager cardManager;
 
 
-    //Ä«µå ¸Å´ÏÀú
+    //ì¹´ë“œ ë§¤ë‹ˆì €
 
     [SerializeField]
     private TextMeshPro Selet;
-    //¿ø·¡ ÀÖ¾ú´ø ³» Ä«µå À§Ä¡
+    //ì›ë˜ ìˆì—ˆë˜ ë‚´ ì¹´ë“œ ìœ„ì¹˜
     [SerializeField]
     private PRS originalPlace;
 
-    //µå·Î¿ì Ä«µå À§Ä¡ ¿ÀºêÁ§Æ®
+    //ë“œë¡œìš° ì¹´ë“œ ìœ„ì¹˜ ì˜¤ë¸Œì íŠ¸
     [SerializeField] Transform myDeckPosition;
     [SerializeField] Transform enemyDeckPosition;
     [SerializeField] Transform myCardUp;
@@ -68,40 +68,40 @@ public class BattleManager : MonoBehaviour
     [SerializeField] Transform enemyCardUp;
     [SerializeField] Transform enemyCardDown;
 
-    //Add¸Ş¼­µå ÇÏ±â ÆíÇÏ°Ô ³Ö¾îº» ÀÌº¥Æ®
+    //Addë©”ì„œë“œ í•˜ê¸° í¸í•˜ê²Œ ë„£ì–´ë³¸ ì´ë²¤íŠ¸
     private static Action<bool> OnAddCard;
-    
-    //Decision Å¬·¡½º¿¡¼­ ³Ñ°Ü¹ŞÀº Ä«µå Á¤º¸¸¦ ÀúÀåÇÏ´Â Å¬·¡½º
+
+    //Decision í´ë˜ìŠ¤ì—ì„œ ë„˜ê²¨ë°›ì€ ì¹´ë“œ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
     private Card selectCard;
 
 
 
-    //Ä«µå ÀÌ¹ÌÁöµé ¼ø¼­
+    //ì¹´ë“œ ì´ë¯¸ì§€ë“¤ ìˆœì„œ
     private int order = 0;
     private int enemyOrder = 0;
-   
-    // Àü¿¡ ¾´ Ä«µåµé ÀÌ¹ÌÁöµé ¼ø¼­
+
+    // ì „ì— ì“´ ì¹´ë“œë“¤ ì´ë¯¸ì§€ë“¤ ìˆœì„œ
     private int sortingCard = 0;
     private int enemySortingCard = 0;
 
-    // ÀüÀü¿¡ ¾´ Ä«µå ¿ÀºêÁ§Æ® »èÁ¦ÇÏ±â À§ÇÑ º¯¼ö
+    // ì „ì „ì— ì“´ ì¹´ë“œ ì˜¤ë¸Œì íŠ¸ ì‚­ì œí•˜ê¸° ìœ„í•œ ë³€ìˆ˜
     private int turnCount = 0;
 
-    // ´ÙÀÌ½º Ã¼Å©
+    // ë‹¤ì´ìŠ¤ ì²´í¬
     public int playerDice = 0;
     public int enemyDice = 0;
 
-    // Å¸ÀÌ¸Ó
+    // íƒ€ì´ë¨¸
     public float timer;
-    
-    // ÇÃ·¹ÀÌ¾î µ¿ÀÛ
+
+    // í”Œë ˆì´ì–´ ë™ì‘
     public State state;
     [SerializeField]
-    private Slider playerHpSlider; // ÇÃ·¹ÀÌ¾î hp ½½¶óÀÌ´õ
+    private Slider playerHpSlider; // í”Œë ˆì´ì–´ hp ìŠ¬ë¼ì´ë”
     [SerializeField]
-    private Slider enemyHpSlider; // Àû hp ½½¶óÀÌ´õ
+    private Slider enemyHpSlider; // ì  hp ìŠ¬ë¼ì´ë”
     [SerializeField]
-    private  TextMeshPro timerText; //Å¸ÀÌ¸Ó ÅØ½ºÆ®
+    private TextMeshPro timerText; //íƒ€ì´ë¨¸ í…ìŠ¤íŠ¸
 
     private void Awake()
     {
@@ -110,17 +110,17 @@ public class BattleManager : MonoBehaviour
             Bm = this;
         }
 
-        player.Init();  
+        player.Init();
         enemy.Init();
-          
-        playerHpSlider.maxValue = player.info.MaxHp;    
+
+        playerHpSlider.maxValue = player.info.MaxHp;
         enemyHpSlider.maxValue = enemy.info.MaxHp;
 
         playerHpSlider.value = player.info.Hp;
         enemyHpSlider.value = enemy.info.Hp;
 
- 
-        cardManager.Init();       
+
+        cardManager.Init();
         OnAddCard = Add;
 
         state = State.CardDecision;
@@ -129,8 +129,8 @@ public class BattleManager : MonoBehaviour
 
     }
     private void Start()
-    {     
-        StartCoroutine(StartGame(5));        
+    {
+        StartCoroutine(StartGame(5));
         StateTurn();
     }
     private void Update()
@@ -153,13 +153,13 @@ public class BattleManager : MonoBehaviour
     }
     /*public void DeckCheck()
     {
-        //ÇÃ·¹ÀÌ¾î³ª Àû µ¦¿¡ Ä«µå°¡ ÀÖ´ÂÁö Ã¼Å©
-        //¾øÀ¸¸é DeckPull()·Î ÀÌµ¿
+        //í”Œë ˆì´ì–´ë‚˜ ì  ë±ì— ì¹´ë“œê°€ ìˆëŠ”ì§€ ì²´í¬
+        //ì—†ìœ¼ë©´ DeckPull()ë¡œ ì´ë™
     }
     public void CardDraw()
     {
-        //Ä«µå µå·Î¿ì ÅÏ
-        //µå·Î¿ì ÇÒ Ä«µå ¾øÀ¸¸é ´ë±â
+        //ì¹´ë“œ ë“œë¡œìš° í„´
+        //ë“œë¡œìš° í•  ì¹´ë“œ ì—†ìœ¼ë©´ ëŒ€ê¸°
     }*/
     private void CardSelectionTurn()
     {
@@ -169,21 +169,21 @@ public class BattleManager : MonoBehaviour
         if (enemyCards.Count != 0)
         {
             enemyCards[0]?.MoveTransform(enemyCards[0].originPRS, true, 0.7f);
-        }    
+        }
     }
     private void DiceTurn()
     {
-        //Á¸ÀçÇÏ´Â ¹öÇÁ »ç¿ë
-        if(player.info.buffs.Count > 0)
+        //ì¡´ì¬í•˜ëŠ” ë²„í”„ ì‚¬ìš©
+        if (player.info.buffs.Count > 0)
         {
-            foreach(var buff in player.info.buffs)
+            foreach (var buff in player.info.buffs)
             {
                 buff.buffUse.Use(player);
             }
         }
-        if(enemy.info.buffs.Count > 0)
+        if (enemy.info.buffs.Count > 0)
         {
-            foreach(var buff in enemy.info.buffs)
+            foreach (var buff in enemy.info.buffs)
             {
                 buff.buffUse.Use(enemy);
             }
@@ -192,11 +192,32 @@ public class BattleManager : MonoBehaviour
         if (playerDecision.card == null && playerDice == 0) { playerDice = 0; }
         if (enemyDecision.card == null && enemyDice == 0) { enemyDice = 0; }
 
-        print($"¾Æ±º ´ÙÀÌ½º{playerDice}");
-        print($"Àû±º ´ÙÀÌ½º{enemyDice}");
-
-        if (enemyDecision.card != null)     
+        if (enemyDecision.card != null)
             enemyDecision.card.EnemyCardFront();
+
+        if (playerDecision.card != null && playerDecision.card.info.Property == PropertyType.DEFENSE)
+        {
+            DefenceCard(true);
+            return;
+        }
+        else if (enemyDecision.card != null && enemyDecision.card.info.Property == PropertyType.DEFENSE)
+        {
+            DefenceCard(false);
+            return;
+        }
+
+        if (playerDecision.card != null && playerDecision.card.info.Property == PropertyType.HEEL)
+        {
+            HeelCard(true);
+            return;
+        }
+        else if (enemyDecision.card != null && enemyDecision.card.info.Property == PropertyType.HEEL)
+        {
+            HeelCard(false);
+            return;
+        }
+
+        print("ì ì´ë‘ ì•„êµ°ì´ í ë””íœìŠ¤ ì•ˆì”€");
 
         if (playerDice > enemyDice)
         {
@@ -219,33 +240,227 @@ public class BattleManager : MonoBehaviour
         playerHpSlider.value = player.info.Hp;
         enemyHpSlider.value = enemy.info.Hp;
 
-        Debug.Log($"CardUse °á°ú: ÇÃ·¹ÀÌ¾îHp:{player.info.Hp}\n¿¡³Ê¹ÌHp:{enemy.info.Hp}");
+        Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
 
         playerDice = 0;
         enemyDice = 0;
 
-        StartCoroutine(CardSorting());       
+        StartCoroutine(CardSorting());
     }
-    public void DiceResultTurn()
+
+    private void DefenceCard(bool myCard)
     {
-        //ÁÖ»çÀ§ ³ôÀº»ç¶÷ÀÌ Ä«µå È¿°ú ¹ßµ¿
-        //´Ù½Ã StateTurn()À¸·Î µ¹¾Æ°¨
+        if (myCard)
+        {
+            if (enemyDecision.card != null && enemyDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (enemyDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    playerDecision.card.info.use(player, enemy);
+                    print("í”Œë ˆì´ì–´ ë°©ì–´");
+                    enemyDecision.card.info.use(enemy, player);
+                    print("ì  ê³µê²©");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (enemyDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    enemyDecision.card.info.use(enemy, player);
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    print("ì  í");
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            playerDice = 0;
+            enemyDice = 0;
+
+            print("ì•„ë¬´ ì¼ë„ ì•ˆì¼ì–´ë‚¨");
+
+            StartCoroutine(CardSorting());
+        }
+        else if (!myCard)
+        {
+            if (playerDecision.card != null && playerDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (playerDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    enemyDecision.card.info.use(player, enemy);
+                    print("ì  ë°©ì–´");
+                    playerDecision.card.info.use(enemy, player);
+                    print("ì•„êµ° ê³µê²©");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (playerDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    playerDecision.card.info.use(enemy, player);
+                    print("í”Œë ˆì´ì–´ í");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            playerDice = 0;
+            enemyDice = 0;
+
+            print("ì•„ë¬´ ì¼ë„ ì•ˆì¼ì–´ë‚¨");
+
+            StartCoroutine(CardSorting());
+        }
     }
-      
-    //¿©±â´Â ´Ù¸¥ ºĞ±âÁ¡
-    /*public void DeckPull()
+
+    private void HeelCard(bool myCard)
     {
-        //Ä«µå ¾øÀ»¶§ Ã¤¿öÁÖ´Â ¸Ş¼­µå
-        //¿©±â¼­ Ä«µå ¼±ÅÃ ¸Ş¼­µå±îÁö ±â´Ù·È´Ù°¡ °°ÀÌ DiceTurn() À¸·Î ÀÌµ¿
-    }*/
-    
+        if (myCard)
+        {
+            if (enemyDecision.card != null && enemyDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (enemyDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    playerDecision.card.info.use(player, enemy);
+                    print("í”Œë ˆì´ì–´ íšŒë³µ");
+                    enemyDecision.card.info.use(enemy, player);
+                    print("ì  ê³µê²©");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (enemyDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    playerDecision.card.info.use(player, enemy);
+                    print("í”Œë ˆì´ì–´ íšŒë³µ");
+
+                    enemyDecision.card.info.use(enemy, player);
+
+                    print("ì  íšŒë³µ");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            playerDecision.card.info.use(player, enemy);
+            print("í”Œë ˆì´ì–´ íšŒë³µ");
+            playerDice = 0;
+            enemyDice = 0;
+
+            StartCoroutine(CardSorting());
+        }
+        else if (!myCard)
+        {
+            if (playerDecision.card != null && playerDecision.card.info.Property != PropertyType.DEFENSE)
+            {
+                if (playerDecision.card.info.Property == PropertyType.ATTACK)
+                {
+                    enemyDecision.card.info.use(player, enemy);
+                    print("ì  íšŒë³µ");
+                    playerDecision.card.info.use(enemy, player);
+                    print("ì•„êµ° ê³µê²©");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+                else if (playerDecision.card.info.Property == PropertyType.HEEL)
+                {
+                    enemyDecision.card.info.use(enemy, player);
+                    print("ì  íšŒë³µ");
+                    playerDecision.card.info.use(enemy, player);
+                    print("ì•„êµ° íšŒë³µ");
+
+                    playerHpSlider.value = player.info.Hp;
+                    enemyHpSlider.value = enemy.info.Hp;
+
+                    Debug.Log($"CardUse ê²°ê³¼: í”Œë ˆì´ì–´Hp:{player.info.Hp}\nì—ë„ˆë¯¸Hp:{enemy.info.Hp}");
+
+                    playerDice = 0;
+                    enemyDice = 0;
+
+                    StartCoroutine(CardSorting());
+                    return;
+                }
+            }
+
+            enemyDecision.card.info.use(enemy, player);
+            print("ì êµ° íšŒë³µ");
+
+            playerDice = 0;
+            enemyDice = 0;
+
+            StartCoroutine(CardSorting());
+        }
+    }
+
+
+
     private void BattleResult(int result)
     {
-        if (result == 0) { timerText.text = "ÆĞ¹è"; }
-        if (result == 1) { timerText.text = "½Â¸®"; }
-        if (result == 2) { timerText.text = "¹«½ÂºÎ"; }
+        if (result == 0) { timerText.text = "íŒ¨ë°°"; }
+        if (result == 1) { timerText.text = "ìŠ¹ë¦¬"; }
+        if (result == 2) { timerText.text = "ë¬´ìŠ¹ë¶€"; }
 
-        StopAllCoroutines();     
+        StopAllCoroutines();
     }
 
     void CardCombine(bool myCard)
@@ -304,7 +519,7 @@ public class BattleManager : MonoBehaviour
             card.originPRS = new PRS(new Vector2(-1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
             card.MoveTransform(card.originPRS, false);
 
-            card.cardSelect = true;        
+            card.cardSelect = true;
         }
 
     }
@@ -327,9 +542,9 @@ public class BattleManager : MonoBehaviour
     }
 
     IEnumerator WaitTimer()
-    {      
+    {
         yield return new WaitForSeconds(0.5f);
-     
+
         if (playerCards.Count == 0)
         {
             StartCoroutine(DrawFullCard(true));
@@ -337,7 +552,7 @@ public class BattleManager : MonoBehaviour
 
         if (enemyCards.Count == 0)
         {
-            StartCoroutine(DrawFullCard(false));       
+            StartCoroutine(DrawFullCard(false));
         }
 
         if (turnCount >= 2 && playerDecision.cardCheck && playerDeleteCards.Count >= 2)
@@ -357,7 +572,7 @@ public class BattleManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2);
-    
+
         if (player.info.Hp == 0 && enemy.info.Hp != 0)
         {
             BattleResult(0);
@@ -370,7 +585,7 @@ public class BattleManager : MonoBehaviour
         {
             BattleResult(2);
         }
-      
+
         OnAddCard?.Invoke(true);
         OnAddCard?.Invoke(false);
 
@@ -384,11 +599,11 @@ public class BattleManager : MonoBehaviour
 
         timer = 10;
 
-        if(enemyCards.Count != 0)
+        if (enemyCards.Count != 0)
         {
             enemyCards[0].originPRS = new PRS(new Vector2(1.8f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
-        }   
-        
+        }
+
         CardSelectionTurn();
     }
     IEnumerator Timer()
@@ -403,13 +618,13 @@ public class BattleManager : MonoBehaviour
         if (timer <= 0)
         {
             timerText.text = "0.00";
-           
+
             if (playerDecision.cardPresence == false && playerDecision.Importedcard != null)
             {
                 playerDecision.DecisionButtom();
             }
         }
-  
+
         state = State.CardDecision;
         DiceTurn();
     }
@@ -418,7 +633,8 @@ public class BattleManager : MonoBehaviour
     {
         if (enemy.info.buffs.Count > 0)
         {
-            for(int i = 0; i < enemy.info.buffs.Count; i++)
+
+            for (int i = 0; i < enemy.info.buffs.Count; i++)
             {
                 var buff = enemy.info.buffs[i];
                 Debug.Log($"enemy buff:{buff.info.Name}, remain: {buff.info.CurrentTurn}");
@@ -453,9 +669,9 @@ public class BattleManager : MonoBehaviour
     }
 
     IEnumerator DrawFullCard(bool myCard)
-    {  
+    {
         for (int i = 0; i < 5; i++)
-        {                  
+        {
             OnAddCard?.Invoke(myCard);
             yield return new WaitForSeconds(0.1f);
         }
@@ -472,7 +688,7 @@ public class BattleManager : MonoBehaviour
             CardCombine(false);
         }
 
-        if (playerDecision.card != null)        
+        if (playerDecision.card != null)
             playerDecision.card.originPRS = new PRS(new Vector2(-4.3f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
         if (enemyDecision.card != null)
             enemyDecision.card.originPRS = new PRS(new Vector2(4.3f, 2.7f), Utlis.Qi, Vector3.one * 4.2f);
@@ -486,15 +702,15 @@ public class BattleManager : MonoBehaviour
 
         if (playerDecision.card != null)
             playerDecision.card.MoveTransform(playerDecision.card.originPRS, true, 0.7f);
-        if(enemyDecision.card != null)     
+        if (enemyDecision.card != null)
             enemyDecision.card.MoveTransform(enemyDecision.card.originPRS, true, 0.7f);
-        
-        yield return new WaitForSeconds(0.1f);     
+
+        yield return new WaitForSeconds(0.1f);
 
         playerDecision.card = null;
         enemyDecision.card = null;
 
-        
+
         StateTurn();
     }
 
@@ -545,9 +761,9 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < targetCards.Count; i++)
         {
             var targetCard = targetCards[i];
-            targetCard.originPRS = originCardPRSs[i];          
-            targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);          
-        }      
+            targetCard.originPRS = originCardPRSs[i];
+            targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
+        }
     }
 
     List<PRS> RoundAlignment(Transform upTR, Transform downTR, int objcount, float height, Vector3 scale)

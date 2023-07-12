@@ -7,17 +7,17 @@ using UnityEngine.UI;
 public class EnemyDecision : MonoBehaviour
 {
     // 콜라이더에 부딪힌 카드 정보
-    private Card Importedcard;  
+    private Card Importedcard;
     // 배틀매니저에서 넘기기위한 카드 정보
     public Card card;
     // 전에 쓴 카드를 삭제하기 위해 있는 변수
     public bool cardCheck;
-  
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Importedcard = collision.gameObject.GetComponent<Card>();
 
-        DecisionButtom();      
+        DecisionButtom();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -31,6 +31,7 @@ public class EnemyDecision : MonoBehaviour
             return;
 
         card = Importedcard;
+        card.defenseCheck = false;
         cardCheck = true;
 
         BattleManager.Bm.enemyCards.Remove(Importedcard);

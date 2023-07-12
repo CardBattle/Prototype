@@ -18,16 +18,16 @@ public class Decision : MonoBehaviour
     // 누르면 바로 타이머가 0초가 되기위해 있는 클래스
     [SerializeField]
     private EnemyDecision enemyDecision;
-    
+
     // 결정 버튼
     [SerializeField]
-    private Button button; 
+    private Button button;
 
- 
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Importedcard = collision.gameObject.GetComponent<Card>();    
+        Importedcard = collision.gameObject.GetComponent<Card>();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -41,6 +41,7 @@ public class Decision : MonoBehaviour
             return;
 
         card = Importedcard;
+        card.defenseCheck = true;
         cardPresence = true;
         cardCheck = true;
 
@@ -53,9 +54,9 @@ public class Decision : MonoBehaviour
         BattleManager.Bm.playerDice = card.info.RandomDice;
         BattleManager.Bm.state = BattleManager.State.CardDecision;
 
-        if ((BattleManager.Bm.enemyCards.Count == 0) || Importedcard != null 
-            && enemyDecision.card != null)  { BattleManager.Bm.timer = 0; }
-    
+        if ((BattleManager.Bm.enemyCards.Count == 0) || Importedcard != null
+            && enemyDecision.card != null) { BattleManager.Bm.timer = 0; }
+
         Importedcard.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
     }
 }

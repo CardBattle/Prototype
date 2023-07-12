@@ -10,11 +10,25 @@ public class Defense : CardUse
 
         BattleManager bm = BattleManager.Bm;
 
-        if (bm.enemyDecision.card.info.Dice > bm.playerDecision.card.info.Dice)
-            bm.enemyDecision.card.info.EffVal -= 1;
-        else bm.enemyDecision.card.info.EffVal -= 2;
+        if (card.defenseCheck == true)
+        {
+            if (bm.enemyDecision.card.info.Dice > bm.playerDecision.card.info.Dice)
+                bm.enemyDecision.card.info.EffVal -= 1;
+            else bm.enemyDecision.card.info.EffVal -= 2;
 
-        Debug.Log("Defense");
+            Debug.Log("PlayerDefense");
+        }
+        else if (card.defenseCheck == false)
+        {
+            if (bm.enemyDecision.card.info.Dice < bm.playerDecision.card.info.Dice)
+                bm.playerDecision.card.info.EffVal -= 1;
+            else bm.playerDecision.card.info.EffVal -= 2;
+
+            Debug.Log("EnemyDefense");
+        }
+
+
+        
     }
 
 }

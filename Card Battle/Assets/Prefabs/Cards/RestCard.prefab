@@ -103,8 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81773cfbbd34aa4e8d9c744e88f55b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
-  property: 1
+  id: 1
+  property: 2
   type: 0
   _name: Rest
   effVal: 1
@@ -116,6 +116,7 @@ MonoBehaviour:
   cardimg: {fileID: 3079076727159251344}
   _Name: {fileID: 5293470488404352641}
   effect: {fileID: 3567342918307487460}
+  defenseCheck: 0
   cardSelect: 0
   originPRS:
     pos: {x: 0, y: 0, z: 0}

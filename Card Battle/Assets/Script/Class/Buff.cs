@@ -15,7 +15,7 @@ public class Buff : MonoBehaviour
     [SerializeField]
     private int turns;
     public BuffUse buffUse;
-    
+
     public void Init()
     {
         info = new(id, type, _name, turns);
@@ -25,7 +25,7 @@ public class Buff : MonoBehaviour
 
     public void BuffCheck(Character character)
     {
-        if(info.CurrentTurn <= 0)
+        if (info.CurrentTurn <= 0)
         {
             character.info.buffs.Remove(this);
         }

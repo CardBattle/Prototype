@@ -25,8 +25,10 @@ public class Character : MonoBehaviour
     
     public List<Buff> buffs;
 
+    public List<Buff> buffs;
+
     public List<GameObject> cards; //카드 매니저에서 캐릭터가 소유한 카드 프리팹을 접근해야하기 때문에 public
-    
+
     public void Init()
     {
         buffs = new List<Buff>();
